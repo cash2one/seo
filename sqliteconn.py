@@ -83,7 +83,7 @@ def insert(dic, table):
         return
     query = query_sql(dic, table)
     try:
-        print query
+        #print query
         cur = conn.cursor()
         cur.execute(query)
         #print 'query ok...'

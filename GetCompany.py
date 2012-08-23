@@ -5,8 +5,10 @@ import urllib
 import re
 import string
 import sqliteconn
+import SimHttp
 import PrBdkey
 import time
+import Cookie
 
 class FindUrlParser(HTMLParser.HTMLParser):
     ''' '''
@@ -72,12 +74,10 @@ def ParserDetailHtml(html_src):
     #print all_detail
 
 def ReadYouboyHtml(url, pre_url):
-    sim = PrBdkey.SimBrowser('', PrBdkey.GetRandUserAgent())
-    head = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Cookie':'JSESSIONID=aaaJR9sm_iA-34J4WNmLt; lzstat_uv=27489373062791789375|2292827@2795053@2797561; lzstat_ss=1311602121_2_1345639229_2292827|1935132936_0_1345639225_2795053|1098209628_0_1345639229_2797561; Hm_lvt_5ff9888622b53eb0ac0205b4b1e5ceb0=1345610419475; Hm_lpvt_5ff9888622b53eb0ac0205b4b1e5ceb0=1345610429550; f5=false',
-            'Host':'www.youboy.com',
-            'Referer':'www.youboy.com'}
-    re, content = sim.request(url, 'GET', headers=head)
+
+    cookie = Cookie.SimpleCookie()
+    sim = SimHttp.SimBrowser(cookie)
+    re, content = sim.request(url, 'GET')
     #print content
     return content
 
@@ -124,7 +124,6 @@ def ReadHtmlOnPage(key, pagenum=0):
     #html_src = urllib.urlopen(url).read()
     html_src = ReadYouboyHtml(url, '')
     print 'load html ok...'
-
     ret = []
     for item in ReadSearchHtml(html_src):
         dic = [key]

@@ -8,104 +8,7 @@ import os;
 import socket
 import HTMLParser
 import sqliteconn
-
-class SimBrowser :
-    socket.setdefaulttimeout(10); # 超时限制 10秒
-    UserAgent="";
-    cookie=None;
-    httplink = httplib2.Http();    
-    httplink.follow_redirects = False;
-    
-    def __init__(self, cookie, UserAgent="Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727)"):
-        self.cookie = cookie;
-        self.UserAgent = UserAgent;        
-        
-    def gen_cookie_str(self):
-        #cookiestr = '; '.join(self.cookie.output(attrs=[], header="").split('\r\n'));
-        cookiestr = ''
-        if len(cookiestr) <= 0:
-            return "";
-        else:
-            return cookiestr;
-    def prepare_request_header(self, header):
-        newheader = {};
-        cookiestr = self.gen_cookie_str();
-        if len(cookiestr) > 0:
-            newheader['Cookie'] = cookiestr;        
-        # set agent
-        newheader['User-Agent'] = self.UserAgent;
-        
-        # replace or append user specified values in header
-        for key in header.keys():
-            newheader[key] = header[key];
-        return newheader;
-
-    # maintain cookies
-    def maintain_cookie(self, response_header):
-        if 'set-cookie' in response_header:
-            self.cookie.load(response_header['set-cookie']);            
-
-    def get_redirect_url(self, prevurl, res):
-        if 'location' not in res:
-            error_log('no location in res');
-            return "";
-
-        location = res['location'];
-        if len(location) <= 0:
-            error_log('location length is zero');
-            return "";
-
-        # check location contain fullpath of target
-        if location.find("http://") != 0:
-            p = re.compile(r"[(http://)]*[.\-_0-9A-Za-z]+");
-            m = p.match(prevurl);
-            if m != None:                
-                host = m.group();
-                return host + location;
-            else:
-                error_log('cannot get host link');
-                host = "";
-        else:
-            return location;
-
-    def request(self, url, method="GET", headers={}, body="", follow_redirects=False): 
-        newheaders = self.prepare_request_header(headers);
-        newurl = url;
-        newbody = body;
-        while (True):
-            try:
-              res, content = self.httplink.request(newurl, method=method, headers=newheaders, body=newbody);
-              self.maintain_cookie(res);
-            except Exception , what:
-                try:
-                  res, content = self.httplink.request(newurl, method=method, headers=newheaders, body=newbody);
-                  self.maintain_cookie(res);
-                except Exception , what: 
-                    try:
-                      res, content = self.httplink.request(newurl, method=method, headers=newheaders, body=newbody);
-                      self.maintain_cookie(res);
-                    except Exception , what: # 访问获取 三次 不成功返回失败
-                        res='';
-                        content='';
-                        break;
-
-            # check redirects
-            if follow_redirects==False:
-                break;
-            elif res.status in(300, 301, 302):                
-                prevurl = newurl;
-                newheaders = self.prepare_request_header({});
-                newurl = self.get_redirect_url(prevurl, res);
-                body = "";
-                method="GET";
-                if len(url) > 0:
-                    continue;
-                else:
-                    sys.stderr.write("Error:failed to get redirect location\n");
-                    break;
-            else:
-                break;
-        return res, content;
+import SimHttp
 
 def GetRandUserAgent():
     random_num=int(random.random()*10);
@@ -130,17 +33,18 @@ def GetRandUserAgent():
 
 def GetBdSuggestion(key_word):
     cookie = ''
-    sim = SimBrowser(cookie, GetRandUserAgent())
+    sim = SimHttp.SimBrowser(cookie, GetRandUserAgent())
     #print key_word
     url = 'http://suggestion.baidu.com/su?wd=' + key_word.encode('utf-8')
     url += '&p=3&cb=window.bdsug.sug&sid=1288_1329_1266_1229_1343_1185_1282_1287_1320_1332_1367&t=1345470017747'
     url += '&p=3&cb=window.bdsug.sug&sid=1288_1329_1266_1229_1343_1185_1282_1287_1320_1332_1367&t=0'
     head = {'Content-Type':'application/x-www-form-urlencoded',
-            'Cookie':cookie,
+            #'Cookie':cookie,
             'Host':'suggestion.baidu.com',
             'Referer':'http://www.baidu.com/'}
     re, content = sim.request(url,'GET', headers=head)
     decode_content = content
+    #print decode_content
     #decode_content = content.decode('gbk').encode('utf-8')
     #print type(decode_content)
     s = decode_content.find('[')
