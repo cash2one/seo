@@ -23,7 +23,7 @@ def read_group_info(table_name):
         #print query
         cur = conn.cursor()
         cur.execute(sql)
-        print 'query ok...'
+        #print 'query ok...'
         ret = cur.fetchall()
         return ret
     except:
@@ -35,6 +35,7 @@ def query_sql(dic, company):
     sql = ('select * from ' + company + ' where ' +
            '"groupid" = "' + dic[0] +
            '" and "keyword" = "' + dic[1] +
+           '" and "last_update" = "' + dic[2] +
            '" and "company_name" = "' + dic[3] +
            '" and "telephone" = "' + dic[6] + '"')
     return sql
@@ -66,7 +67,7 @@ def insert_multi(dic, table):
     try:
         conn.execute(sql);
         conn.commit();
-        print 'insert ok...';
+        #print 'insert ok...';
     except:
         print 'insert error...'
         conn.close();
@@ -85,7 +86,7 @@ def insert(dic, table):
         print query
         cur = conn.cursor()
         cur.execute(query)
-        print 'query ok...'
+        #print 'query ok...'
         if len(cur.fetchall()) != 0:
             print 'Exist same company'
             return
@@ -96,10 +97,10 @@ def insert(dic, table):
     sql = (gen_sql_str(dic, table))
     #print sql
     try:
-        print sql
+        #print sql
         conn.execute(sql);
         conn.commit();
-        print 'insert ok...';
+        #print 'insert ok...';
     except:
         print 'insert error...'
         conn.close();
