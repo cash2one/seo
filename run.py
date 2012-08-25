@@ -4,44 +4,49 @@ import threading
 import time
 import BaiduRank
 import GetCompany
-import PrBdkey
+import GetSuggestion
 import aiZhan_Face
+import sqliteconn
 
 class thread_company(threading.Thread):
     ''''''
-    def __init__(self, interval=60*10):
+    def __init__(self, sqlconn_, interval=60*10):
         threading.Thread.__init__(self, name = 'crawler_company')
         self.interval = interval
+        self.sqlconn = sqlconn_
 
     def run(self):
         while True:
-            GetCompany.thread_crawler_company()
+            GetCompany.thread_crawler_company(self.sqlconn)
             print 'I\'m sleeping...'
             time.sleep(self.interval)
             print 'Working again...'
 
 class thread_word_sug(threading.Thread):
     ''''''
-    def __init__(self, interval=60*10):
+    def __init__(self, sqlconn_, interval=60*10):
         threading.Thread.__init__(self, name = 'crawler_sug')
         self.interval = interval
+        self.sqlconn = sqlconn_
 
     def run(self):
         while True:
-            PrBdkey.thread_sug()
+            #PrBdkey.thread_sug()
+            GetSuggestion.thread_sug(self.sqlconn)
             print 'I\'m sleeping...'
             time.sleep(self.interval)
             print 'Working again...'
 
 class thread_rank(threading.Thread):
     ''''''
-    def __init__(self, interval=60*1):
+    def __init__(self, sqlconn_, interval=60*1):
         threading.Thread.__init__(self, name = 'crawler_rank')
         self.interval = interval
+        self.sqlconn = sqlconn_
 
     def run(self):
         while True:
-            BaiduRank.thread_rank()
+            BaiduRank.thread_rank(self.sqlconn)
             print 'I\'m sleeping...'
             time.sleep(self.interval)
             print 'Working again...'
@@ -49,36 +54,41 @@ class thread_rank(threading.Thread):
 
 class thread_query(threading.Thread):
     ''''''
-    def __init__(self, interval=60*1):
+    def __init__(self, sqlconn_, interval=60*1):
         threading.Thread.__init__(self, name = 'crawler_query')
         self.interval = interval
+        self.sqlconn = sqlconn_
 
     def run(self):
         while True:
-            BaiduRank.thread_query()
+            #BaiduRank.thread_query()
+            GetSuggestion.thread_query(self.sqlconn)
             print 'I\'m sleeping...'
             time.sleep(self.interval)
             print 'Working again...'
 
 class thread_diagnose(threading.Thread):
     ''''''
-    def __init__(self, interval=60*5):
+    def __init__(self, sqlconn_, interval=60*5):
         threading.Thread.__init__(self, name = 'crawler_diagnose')
         self.interval = interval
+        self.sqlconn = sqlconn_
+        print 'im not ok...'
 
     def run(self):
         while True:
-            aiZhan_Face.thread_diagnose()
+            aiZhan_Face.thread_diagnose(self.sqlconn)
             print 'I\'m sleeping...'
             time.sleep(self.interval)
             print 'Working again...'
 
-def main():
-    crawler_company = thread_company(1000)
-    crawler_query = thread_query()
-    crawler_rank = thread_rank()
-    crawler_sug = thread_word_sug()
-    crawler_diagnose = thread_diagnose()
+def main(sqlconn):
+    #sqlconn = sqliteconn.sqlconn()
+    crawler_company = thread_company(sqlconn_=sqlconn, interval=1000)
+    crawler_query = thread_query(sqlconn_=sqlconn)
+    crawler_rank = thread_rank(sqlconn_=sqlconn)
+    crawler_sug = thread_word_sug(sqlconn_=sqlconn)
+    crawler_diagnose = thread_diagnose(sqlconn_=sqlconn)
     
     crawler_company.start()    
     crawler_query.start()
@@ -93,5 +103,5 @@ def main():
     print 'thread working behind...'
 
 if __name__ == '__main__':
-    main()
+    main('company.db')
     print 'main thread exit...'

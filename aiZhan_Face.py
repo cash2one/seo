@@ -148,7 +148,7 @@ def get_diagnose_of_url(url):
 
     return ret
 
-def get_diagnose_of_group(group):
+def get_diagnose_of_group(group, sqlconn):
     ret_my = get_diagnose_of_url(group[2])
     ret_other = get_diagnose_of_url(group[3])
 
@@ -156,13 +156,14 @@ def get_diagnose_of_group(group):
     for i in xrange(0,len(ret_my)):
         ret.append(ret_my[i] + '|' + ret_other[i])
 
-    print len(ret)
-    sqliteconn.insert_multi(ret, 'diagnose')
+    #print len(ret)
+    sqlconn.insert_multi(ret, 'diagnose')
 
-def thread_diagnose():
-    group_ret = sqliteconn.read_group_info('group_info_diagnose')
+def thread_diagnose(sqlconn_name):
+    sqlconn = sqliteconn.sqlconn(sqlconn_name)
+    group_ret = sqlconn.read_group_info('group_info_diagnose')
     for group in group_ret:
-        get_diagnose_of_group(group)
+        get_diagnose_of_group(group, sqlconn)
     
 def main():
     atest = TaizhanFace('163.com');

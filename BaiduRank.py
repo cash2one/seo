@@ -108,17 +108,21 @@ def GetBaiduPage(key, page_num=0):
     url += key.encode('utf-8')
     print 'try load', url.decode('utf-8').encode('gbk')
 
-    html_src = urllib.urlopen(url).read().decode('utf-8')
+    html_src = urllib.urlopen(url).read()
+    try:
+        html_src = html_src.decode('utf-8')
+    except:
+        print 'decode error, continue...'
 
     return html_src
     #return GetBaiduNatureRank(html_src, target_url)
 
-def GetBaiduPageFull(key, target_url):
+def GetBaiduPageFull(key, target_url, pagenum=5):
     #print key.encode('gb2312')
     
     #search_key = key.decode('utf-8')
     search_key = key
-    for i in xrange(0, 10):
+    for i in xrange(0, pagenum):
         html = GetBaiduPage(search_key, i)
         rank, rank_url = GetBaiduNatureRank(html, target_url)
         if rank != 0:
@@ -136,7 +140,7 @@ def GetBaiduFixRank(key, target_url):
             return str(i), link[i].split(' ')[0]
     return '0',''
 
-def get_rank_of_group(group):
+def get_rank_of_group(group, sqlconn):
     keywords = group[2].split('#')
     for key in keywords:
             #print key
@@ -145,8 +149,8 @@ def get_rank_of_group(group):
         if group[5] == 1:
             my_rank, my_rank_url = GetBaiduPageFull(key, group[3])
             other_rank, other_rank_url = GetBaiduPageFull(key, group[4])
-            ret.append(my_rank + '--' + other_rank)
-            ret.append(my_rank_url + '--' + other_rank_url)
+            ret.append(my_rank + '|' + other_rank)
+            ret.append(my_rank_url + '|' + other_rank_url)
             ret.append('')
             ret.append('')
         elif group[5] == 2:
@@ -158,48 +162,19 @@ def get_rank_of_group(group):
             ret.append(my_rank_url + '|' + other_rank_url)
         ret.append('unknown flow')
         print ret
-        sqliteconn.insert_multi(ret, 'rank_compare')
-   
-def get_query_of_group(group):
-    keywords = group[3].split('#')
-    for key in keywords:
-        ret = [str(group[0]), key]
-        rank, rank_url = GetBaiduFixRank(key, group[2])
-        print rank, rank_url
-        rank_type = ''
-        if rank != '0':
-            ret.append(rank_url)
-            rank_type = '1'
-        else:
-            rank, rank_url = GetBaiduPageFull(key, group[2])
-            if rank != '0':
-                ret.append(rank_url)
-                rank_type = '2'
-            else:
-                ret.append('failed found!')
-                rank_type = '0'
-        ret.append('unknown')
-        ret.append('unknown')
-        ret.append('unknown')
-        ret.append(rank_type)    
+        sqlconn.insert_multi(ret, 'rank_compare')
 
-        sqliteconn.insert_multi(ret, 'key_query')
-
-def thread_rank():
-    group_ret = sqliteconn.read_group_info('group_info_rank')
+def thread_rank(sqlconn_name):
+    sqlconn = sqliteconn.sqlconn(sqlconn_name)
+    group_ret = sqlconn.read_group_info('group_info_rank')
     for group in group_ret:
-        get_rank_of_group(group)
-
-def thread_query():
-    group_ret = sqliteconn.read_group_info('group_info_query')
-    for group in group_ret:
-        get_query_of_group(group)   
+        get_rank_of_group(group, sqlconn)
 
 if __name__ == '__main__':
     #src = open('1.txt').read()
-
+    
     #print GetBaiduPageFull('鲜花', 'bj.58.com')
     #print GetBaiduFixRank('鲜花', 'zhenaihuawu.com')
-    #thread_rank()
+    thread_rank()
     #thread_query()
-    GetBaiduNum(u'鲜花')
+    #GetBaiduNum(u'鲜花')

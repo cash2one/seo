@@ -6,7 +6,7 @@ import re
 import string
 import sqliteconn
 import SimHttp
-import PrBdkey
+#import PrBdkey
 import time
 import Cookie
 
@@ -148,7 +148,7 @@ def main():
     #ParserDetailHtml(html_src.decode('utf-8'))
     CrawlerHtml('笔记本', 3)
 
-def get_company_of_group(group):
+def get_company_of_group(group, sqlconn):
     keys = group[2].split('#')
     for key in keys:
         for item in CrawlerHtml(key, 3):
@@ -156,17 +156,18 @@ def get_company_of_group(group):
             for dic in item:
                 ist = [str(group[0])]
                 ist.extend(dic)
-                sqliteconn.insert(ist, 'company')
+                sqlconn.insert(ist, 'company')
                 #for value in ist:
                 #    print value
                 #print '----'
 
-def thread_crawler_company():
+def thread_crawler_company(sqlconn_name):
+    sqlconn = sqliteconn.sqlconn(sqlconn_name)
     #for item in sqliteconn.read_key_words('company_keyword'):
     #    CrawlerHtml(item.encode('utf-8'), 5)
-    group_ret = sqliteconn.read_group_info('group_info_company')
+    group_ret = sqlconn.read_group_info('group_info_company')
     for group in group_ret:
-        get_company_of_group(group)
+        get_company_of_group(group,sqlconn)
 
 if __name__ == '__main__':
     #main()
