@@ -56,7 +56,7 @@ class sqlconn():
         #print sql
      
     def read_group_info(self, table_name):
-        sql = ('select * from ' + table_name)
+        sql = ('select * from ' + table_name + ' order by groupid desc')
 
         try:
             #print sql
