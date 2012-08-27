@@ -65,27 +65,49 @@ def get_suggestion(start_key, forbidden):
             ret.extend(get_flow(word))
             yield ret
 
-def get_query_of_group(group, sqlconn):
-    sug_word = group[2]
-    s_dic = {'groupid':str(group[0]),
-             'sug_word':sug_word}
+def get_query_of_sug_word(groupid, url, sqlconn):
+    #sug_word = group[2]
+    #s_dic = {'groupid':str(group[0]),
+    #         'sug_word':sug_word}
     #update_dic = {'rank':BaiduRank.}
-    group_info = sqlconn.select_table(str(group[0]), 'group_info_sug')
-    if len(group_info) != 1:
-        return ''
-    url = group_info[0][4]
-    #if url.strip() == '':
-    #    return ''
-    print url, sug_word
-    my_rank, my_rank_url = BaiduRank.GetBaiduPageFull(sug_word, url)
-    #print my_rank, my_rank_url
-    ret_dic = {'rank':my_rank,
-               'load_url':get_baidu_loadurl(sug_word, url)}
-    for item in ret_dic:
-        print item, ret_dic[item]
-    sqlconn.update_table(ret_dic, s_dic, 'suggestion')
+    suggestion = sqlconn.select_table(groupid, 'suggestion')
+    if len(suggestion) == 0:
+        return
+    for row_sug in suggestion:
+        sug_word = row_sug[2]
+        print url, sug_word
+        my_rank, my_rank_url = BaiduRank.GetBaiduPageFull(sug_word, url)
+        #print my_rank, my_rank_url
+        ret_dic = {'rank':my_rank,
+                   'load_url':get_baidu_loadurl(sug_word, url)}
+        s_dic = {'groupid':groupid,
+                 'sug_word':sug_word}
+        for item in ret_dic:
+            print item, ret_dic[item]
+        sqlconn.update_table(ret_dic, s_dic, 'suggestion')
+
+def get_query_of_group(group, sqlconn):
+    groupid = str(group[0])
+    status = group[5]
+    # 如果推荐词抓取未完成, 返回
+    if status != 1:
+        return
+
+    url = group[4]
+    if url == None:
+        return
+    get_query_of_sug_word(groupid, url, sqlconn)
+
+    # 更改状态为推荐词查询完成
+    ret_dic = {'status':'2'}
+    s_dic = {'groupid':str(group[0])}
+    sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
 
 def get_sug_of_group(group, sqlconn):
+    # 关键字状态为促初始
+    if group[5] != 0:
+        return
+
     key_words = group[2].split('#')
     #if group[3] != '':
     forbid_words = group[3].split('#')
@@ -99,9 +121,14 @@ def get_sug_of_group(group, sqlconn):
             #for item in sug_res:
                 #print item
 
+    # 更新状态为抓取推荐词完成
+    ret_dic = {'status':'1'}
+    s_dic = {'groupid':str(group[0])}
+    sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
+
 def thread_query(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
-    group_ret = sqlconn.read_group_info('suggestion')
+    group_ret = sqlconn.read_group_info('group_info_sug')
     print len(group_ret)
     idx = 0
     for group in group_ret:

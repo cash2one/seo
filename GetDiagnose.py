@@ -149,6 +149,9 @@ def get_diagnose_of_url(url):
     return ret
 
 def get_diagnose_of_group(group, sqlconn):
+    if group[4] != 0:
+        return 
+    
     ret_my = get_diagnose_of_url(group[2])
     ret_other = get_diagnose_of_url(group[3])
 
@@ -158,6 +161,10 @@ def get_diagnose_of_group(group, sqlconn):
 
     #print len(ret)
     sqlconn.insert_multi(ret, 'diagnose')
+    #更新状态为 诊断结束
+    ret_dic = {'status':'1'}
+    s_dic = {'groupid':str(group[0])}
+    sqlconn.update_table(ret_dic, s_dic, 'group_info_diagnose')
 
 def thread_diagnose(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
