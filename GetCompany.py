@@ -36,6 +36,8 @@ def erase_other(line):
 
 def ParserDetailHtml(html_src):
     s_pos = html_src.find(u'[更新')
+    if s_pos == -1:
+        return []
     e_pos = html_src.find(']')
 
     date = time.localtime(time.time())
@@ -89,7 +91,10 @@ def ReadDetailHtml(url, pre_url):
     try:
         html_src = html_src.decode('utf-8')
     except:
-        pass
+        print '/////////'
+        print 'decode company info url_src error...'
+        print '/////////'
+        return []
     #time.sleep(2)
     return ParserDetailHtml(html_src)
 
