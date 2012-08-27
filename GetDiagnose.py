@@ -172,6 +172,10 @@ def thread_diagnose(sqlconn_name):
     for group in group_ret:
         get_diagnose_of_group(group, sqlconn)
         time.sleep(10)
+
+def get_diagnose(sqlconn_name):
+    diagnose = sqlconn.select_table(groupid, 'group_info_diagnose')
+    get_diagnose_of_group(diagnose, sqlconn)
     
 def main():
     atest = TaizhanFace('163.com');

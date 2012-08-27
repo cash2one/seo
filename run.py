@@ -85,16 +85,16 @@ class thread_diagnose(threading.Thread):
 def main(sqlconn):
     #sqlconn = sqliteconn.sqlconn()
     crawler_company = thread_company(sqlconn_=sqlconn, interval=1000)
-    crawler_query = thread_query(sqlconn_=sqlconn)
+    #crawler_query = thread_query(sqlconn_=sqlconn)
     crawler_rank = thread_rank(sqlconn_=sqlconn)
-    crawler_sug = thread_word_sug(sqlconn_=sqlconn)
-    crawler_diagnose = thread_diagnose(sqlconn_=sqlconn)
+    #crawler_sug = thread_word_sug(sqlconn_=sqlconn)
+    #crawler_diagnose = thread_diagnose(sqlconn_=sqlconn)
     
-    crawler_company.start()    
-    crawler_query.start()
+    #crawler_company.start()    
+    #crawler_query.start()
     crawler_rank.start()
-    crawler_sug.start()
-    crawler_diagnose.start()
+    #crawler_sug.start()
+    #crawler_diagnose.start()
 
     #crawler_query.join()
     #crawler_rank.join()

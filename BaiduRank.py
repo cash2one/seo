@@ -118,6 +118,7 @@ def GetBaiduPage(key, page_num=0):
     cookie = Cookie.SimpleCookie()
     sim = SimHttp.SimBrowser(cookie)
     re, content = sim.request(url, 'GET')
+    #print re
     try:
         html_src = content.decode('utf-8')
     except:
@@ -134,6 +135,8 @@ def GetBaiduPageFull(key, target_url, pagenum=5):
     search_key = key
     for i in xrange(0, pagenum):
         html = GetBaiduPage(search_key, i)
+        #if str(html.strip()) == 0:
+        #    return '-1',''
         rank, rank_url = GetBaiduNatureRank(html, target_url)
         if rank != 0:
             return str(rank), rank_url
@@ -144,10 +147,14 @@ def GetBaiduFixRank(key, target_url):
     #search_key = key.decode('utf-8')
     search_key = key
     html = GetBaiduPage(search_key)
+    #if str(html.strip()) == 0:
+    #    return '-1',''
+    
     link = GetFixLink(html)
     for i in xrange(0, len(link)):
+        print link[i]
         if link[i].find(target_url) != -1:
-            return str(i), link[i].split(' ')[0]
+            return str(i + 1), link[i].split(' ')[0]
     return '0',''
 
 def get_rank_of_group(group, sqlconn):

@@ -93,14 +93,14 @@ class sqlconn():
                 ret += ','
             else:
                 ret += ')'
-        print ret
+        #print ret
         return ret
 
     def insert_multi(self, dic, table):
         sql = (self.gen_sql_str(dic, table))
         #print sql
         try:
-            print sql
+            #print sql
             self.conn.execute(sql);
             self.conn.commit();
             #print 'insert ok...';
