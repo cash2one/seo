@@ -43,7 +43,7 @@ def get_baidu_loadurl(key_word, target_url):
     return clean_tag(ret[0].split(' ')[1])
 
 def get_relate(key_word):
-    sim = SimHttp.Browser('')
+    sim = SimHttp.SimBrowser('')
     #url = host_name + '?keyword=' + key_word
     url = host_name + '?relate=' + key_word
     print url

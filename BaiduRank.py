@@ -14,6 +14,84 @@ import time
 cookie = Cookie.SimpleCookie()
 sim = SimHttp.SimBrowser(cookie)
 
+class GetBaiduRank():
+    def __init__(self):
+        self.base = Base()
+
+    def GetBaiduPage(key, page_num=0):
+        '''get baidu search page of num page_num'''
+        attrs = {'ie':'utf-8', 'pn':'0'}
+        attrs['pn'] = str(page_num * 10)
+        url_attrs = urllib.urlencode(attrs)
+        url_domain = 'http://www.baidu.com/s?'
+        url = url_domain + url_attrs + '&wd='
+        url += key.encode('utf-8')
+
+        return self.base.GetHtmlPage(url)
+
+    def GetFixLink(self, html_src):
+        '''get all fix link in the page'''
+        idx = 0
+        ret = []
+        table_section = FindSection(html_src, '<table', '</table>')
+        if len(table_section) == 0:
+            return ['error link']
+        right_rank = FindSection(table_section[0], '<font size="-1" color="#008000"', '</font>')
+        left_rank = []
+        for item in table_section[1:]:
+            font = FindSection(item, '<font size=-1 color="#008000"', '</font>')
+            left_rank.extend(font)
+        left_rank.extend(right_rank)
+        #for i in left_rank:
+        #    print i
+        return left_rank
+
+    def find_table(self, html_src, start):
+        s = html_src.find('<table', start)
+        if s == -1:
+            return -1, ''
+        e = html_src.find('>', s)
+        return e+1, html_src[s:e+1]
+    
+    def GetBaiduNatureRank(self, html_src, target_url):
+        idx = 0
+        htmlparser = FindUrlParser(target_url)
+        while True:
+            idx, content = self.find_table(html_src, idx)
+            if idx == -1:
+                break
+            htmlparser.feed(content)
+            if htmlparser.rank != 0:
+                return htmlparser.rank, htmlparser.rank_url
+        return 0, ''
+
+    def GetBaiduPageFull(key, target_url, pagenum=5):
+        #print key.encode('gb2312')
+        
+        #search_key = key.decode('utf-8')
+        search_key = key
+        for i in xrange(0, pagenum):
+            html = self.GetBaiduPage(search_key, i)
+            if html == '':
+                continue
+            rank, rank_url = self.GetBaiduNatureRank(html, target_url)
+            if rank != 0:
+                return str(rank), rank_url
+                #return rank
+        return '0',''
+
+    def GetBaiduFixRank(key, target_url):
+        #search_key = key.decode('utf-8')
+        search_key = key
+        html = GetBaiduPage(search_key)
+        #if str(html.strip()) == 0:
+        #    return '-1',''
+        
+        link = GetFixLink(html)
+        for i in xrange(0, len(link)):
+            if link[i].find(target_url) != -1:
+                return str(i), link[i].split(' ')[0]
+        return '0',''
 
 class FindUrlParser(HTMLParser.HTMLParser):
     ''' '''
