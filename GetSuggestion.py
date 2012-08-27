@@ -5,9 +5,11 @@ import BaiduRank
 import Cookie
 import sqliteconn
 import time
+import Base
 
 cookie = Cookie.SimpleCookie()
 sim = SimHttp.SimBrowser(cookie)
+base = Base.Base()
 
 #class Suggestion():
 #    '''get suggestions of keyword'''
@@ -29,9 +31,11 @@ def get_baidu_loadurl(key_word, target_url):
     host = 'http://www.baidu.com/s'
     url = host + '?wd=site%3A' + target_url + '+' + key_word
     print url
+    
     re, content = sim.request(url, 'GET')
     content = content.decode('utf-8')
-    ret = BaiduRank.FindSection(content, '<span class="g">', '</span>')
+    print content
+    ret = base.FindSection(content, '<span class="g">', '</span>')
     #for item in ret:
     #    print item.split(' ')[1]
     #print ret
@@ -48,6 +52,8 @@ def get_relate(key_word):
     url = host_name + '?relate=' + key_word
     print url
     re, content = sim.request(url, 'GET')
+    #print 'load url ok...'
+    #print content
     content = content.decode('utf-8')
     return content.split('\n')[:-1]
 
@@ -72,17 +78,17 @@ def get_suggestion(start_key, forbidden):
             yield ret
 
 def get_query_of_sug_word(groupid, url, sqlconn):
-    #sug_word = group[2]
-    #s_dic = {'groupid':str(group[0]),
-    #         'sug_word':sug_word}
-    #update_dic = {'rank':BaiduRank.}
     suggestion = sqlconn.select_table(groupid, 'suggestion')
     if len(suggestion) == 0:
         return
     for row_sug in suggestion:
         sug_word = row_sug[2]
         print url, sug_word
-        my_rank, my_rank_url = BaiduRank.GetBaiduPageFull(sug_word, url)
+        rank_getter = BaiduRank.GetBaiduRank()
+        my_rank, my_rank_url = rank_getter.GetBaiduPageFull(sug_word, url)
+        #my_rank, my_rank_url = BaiduRank.GetBaiduPageFull(sug_word, url)
+        #my_rank = 0
+        #my_rank_url = '...'
         #print my_rank, my_rank_url
         ret_dic = {'rank':my_rank,
                    'load_url':get_baidu_loadurl(sug_word, url)}
@@ -123,6 +129,7 @@ def get_sug_of_group(group, sqlconn):
     #if group[3] != '':
     forbid_words = group[3].split('#')
     for key_word in key_words:
+        #print key_word
         for sug_res in get_suggestion(key_word, forbid_words):
             ist_ret = [str(group[0]), key_word]
             ist_ret.extend(sug_res)
@@ -131,11 +138,6 @@ def get_sug_of_group(group, sqlconn):
             sqlconn.insert_multi(ist_ret, 'suggestion')
             #for item in sug_res:
                 #print item
-
-    # 更新状态为抓取推荐词完成
-#    ret_dic = {'status':'1'}
-#    s_dic = {'groupid':str(group[0])}
-#    sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
 
 def thread_query(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
@@ -153,6 +155,7 @@ def thread_sug(sqlconn_name):
     group_ret = sqlconn.read_group_info('group_info_sug')
     for group in group_ret:
         get_sug_of_group(group, sqlconn)
+        print 'sleep for crawler next group of sug...'
         time.sleep(10)
 
 
