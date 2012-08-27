@@ -7,6 +7,8 @@ import urllib
 import HTMLParser
 import re
 import sqliteconn
+import SimHttp
+import Cookie
 
 class FindUrlParser(HTMLParser.HTMLParser):
     ''' '''
@@ -112,9 +114,11 @@ def GetBaiduPage(key, page_num=0):
     url += key.encode('utf-8')
 #    print 'try load', url.decode('utf-8').encode('gbk')
 
-    html_src = urllib.urlopen(url).read()
+    cookie = Cookie.SimpleCookie()
+    sim = SimHttp.SimBrowser(cookie)
+    re, content = sim.request(url, 'GET')
     try:
-        html_src = html_src.decode('utf-8')
+        html_src = content.decode('utf-8')
     except:
         print 'decode html_src of', url, 'error, continue...'
         print html_src
