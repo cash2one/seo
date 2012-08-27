@@ -9,6 +9,7 @@ import re
 import sqliteconn
 import SimHttp
 import Cookie
+import time
 
 class FindUrlParser(HTMLParser.HTMLParser):
     ''' '''
@@ -178,6 +179,7 @@ def thread_rank(sqlconn_name):
     group_ret = sqlconn.read_group_info('group_info_rank')
     for group in group_ret:
         get_rank_of_group(group, sqlconn)
+        time.sleep(10)
 
 if __name__ == '__main__':
     #src = open('1.txt').read()

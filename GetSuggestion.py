@@ -4,6 +4,7 @@ import SimHttp
 import BaiduRank
 import Cookie
 import sqliteconn
+import time
 
 host_name = 'http://keys.tu1001.com:1110'
 
@@ -133,6 +134,7 @@ def thread_query(sqlconn_name):
     idx = 0
     for group in group_ret:
         get_query_of_group(group, sqlconn)
+        time.sleep(10)
         print '#####################'
     print 'Finish>>>>>>>>>>>>>>'
 
@@ -141,6 +143,7 @@ def thread_sug(sqlconn_name):
     group_ret = sqlconn.read_group_info('group_info_sug')
     for group in group_ret:
         get_sug_of_group(group, sqlconn)
+        time.sleep(10)
     
 def main():
     #get_suggestion(u'笔记本',[])

@@ -85,7 +85,12 @@ def ReadDetailHtml(url, pre_url):
     full_url = 'http://www.youboy.com' + url
     print full_url
     #html_src = urllib.urlopen(full_url).read().decode('utf-8')
-    html_src = ReadYouboyHtml(full_url, pre_url).decode('utf-8')
+    html_src = ReadYouboyHtml(full_url, pre_url)
+    try:
+        html_src = html_src.decode('utf-8')
+    except:
+        pass
+    #time.sleep(2)
     return ParserDetailHtml(html_src)
 
 def FindTagA(html_src, start):
@@ -131,6 +136,7 @@ def ReadHtmlOnPage(key, pagenum=0):
         if len(dic) == 1:
             continue
         ret.append(dic)
+        time.sleep(5)
     #for item in ret:
     #    print item.encode('gbk')
     return ret
@@ -168,6 +174,7 @@ def thread_crawler_company(sqlconn_name):
     group_ret = sqlconn.read_group_info('group_info_company')
     for group in group_ret:
         get_company_of_group(group,sqlconn)
+        time.sleep(10)
 
 if __name__ == '__main__':
     #main()
