@@ -106,7 +106,7 @@ def GetBaiduPage(key, page_num=0):
     url_domain = 'http://www.baidu.com/s?'
     url = url_domain + url_attrs + '&wd='
     url += key.encode('utf-8')
-    print 'try load', url.decode('utf-8').encode('gbk')
+#    print 'try load', url.decode('utf-8').encode('gbk')
 
     html_src = urllib.urlopen(url).read()
     try:

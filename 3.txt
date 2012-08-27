@@ -1,0 +1,701 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SEO综合查询 - 站长工具</title>
+<link rel="icon" href="/Chinaz.ico" type="image/x-icon" />
+<link href="/template/default/styles/toolsite.css?ver=2011_11" rel="stylesheet" type="text/css" />
+<script src="/template/default/js/globals.js?ver=2011_10" type="text/javascript"></script>
+
+<link rel="Stylesheet" type="text/css" href="http://img.chinaz.com/max-templates/passport/styles/topbar.css" />
+<script language="JavaScript">
+if(self!=top){top.location=self.location;}
+</script>
+</head>
+<body>
+<div class="wrap">
+<!--top-->
+<script type="text/javascript">
+var chinazTopBarMenu = {
+create: function (target, menucontents) {
+if (!document.getElementById(menucontents)) {
+    return;
+}
+var contents_wrap = document.getElementById(menucontents);
+var contents = contents_wrap.innerHTML;
+target.className += " hover";
+var dropdownmenu_wrap = document.createElement("div");
+dropdownmenu_wrap.className = "dropdownmenu-wrap";
+var dropdownmenu = document.createElement("div");
+dropdownmenu.className = "dropdownmenu";
+dropdownmenu.style.width = "auto";
+var dropdownmenu_inner = document.createElement("div");
+dropdownmenu_inner.className = "dropdownmenu-inner";
+dropdownmenu_wrap.appendChild(dropdownmenu);
+dropdownmenu.appendChild(dropdownmenu_inner);
+dropdownmenu_inner.innerHTML = contents;
+if (target.getElementsByTagName("div").length == 0) {
+    target.appendChild(dropdownmenu_wrap);
+}
+},
+clear: function (target) {
+target.className = target.className.replace(" hover", "");
+}
+}
+</script>
+<div class="top-nav" >
+    <div class="top-menu">
+        <ul id="chinaz_website_links" class="accesslink">
+            <li><a href="http://www.chinaz.com"><span>站长之家</span></a></li>
+            <li onmouseover="chinazTopBarMenu.create(this,'chinaz_website_menu_1');" onmouseout="chinazTopBarMenu.clear(this);">
+                <a class="item-expand" href="http://bbs.chinaz.com" target="_blank"><span>站长论坛</span></a>
+            </li>
+            <li onmouseover="chinazTopBarMenu.create(this,'chinaz_website_menu_2');" onmouseout="chinazTopBarMenu.clear(this);">
+                <a class="item-expand" href="http://tool.chinaz.com" target="_blank"><span>站长工具</span></a>
+            </li>
+            <li><a href="http://jy.chinaz.com" target="_blank"><span>站长交易</span></a></li>
+            <li><a href="http://down.chinaz.com" target="_blank"><span>源码下载</span></a></li>
+            <li onmouseover="chinazTopBarMenu.create(this,'chinaz_website_menu_3');" onmouseout="chinazTopBarMenu.clear(this);">
+                    <a class="item-expand" href="http://sc.chinaz.com" target="_blank"><span>站长素材</span></a>
+                </li>
+            <li><a href="http://www.cnzz.com" target="_blank"><span>免费统计</span></a></li>
+            <li><a href="http://www.313.com" target="_blank"><span>建站大师</span></a></li>
+            <li><a href="http://www.idc123.com" target="_blank"><span>主机之家</span></a></li>
+        </ul>
+
+        <div id="chinaz_website_menu_1" class="topbar-hiddencontents">
+            <a href="http://bbs.chinaz.com/Club/list-1.html" target="_blank">站长俱乐部</a>
+            <a href="http://bbs.chinaz.com/Res/list-1.html" target="_blank">网站建设资源</a>
+            <a href="http://bbs.chinaz.com/Shuiba/list-1.html" target="_blank">站长水吧</a>
+        </div>
+
+        <div id="chinaz_website_menu_2" class="topbar-hiddencontents">
+            <a href="http://alexa.chinaz.com" target="_blank">ALEXA排名查询</a>
+            <a href="http://mytool.chinaz.com/baidusort.aspx" target="_blank">百度权重查询</a>
+            <a href="http://seo.chinaz.com" target="_blank">SEO概况查询</a>
+            <a href="http://link.chinaz.com" target="_blank">友情链接查询</a>
+            <a href="http://pr.chinaz.com" target="_blank">Google PR查询</a>
+            <a href="http://whois.chinaz.com" target="_blank">Whois信息查询</a>	   
+			<a href="http://tool.chinaz.com/beian.aspx" target="_blank">域名备案查询</a>
+        </div>
+         <div id="chinaz_website_menu_3" class="topbar-hiddencontents">
+                <a href="http://font.chinaz.com/" target="_blank">字体下载</a>
+                <a href="http://desk.chinaz.com/" target="_blank">高清壁纸</a>
+				<a href="http://desk.chinaz.com/shoujibizhi/" target="_blank">手机壁纸</a>
+                <a href="http://sc.chinaz.com/tupian/" target="_blank">高清图片</a>
+                <a href="http://sc.chinaz.com/shiliang/" target="_blank">矢量素材</a>
+                <a href="http://sc.chinaz.com/ppt/" target="_blank">PPT模板</a>
+                <a href="http://sc.chinaz.com/psd/" target="_blank">PSD素材</a>
+          </div>
+    </div>
+
+    <div id="chinaz_topbar" style="float:right;"></div>
+
+ </div>
+
+<div class="top">
+<div class="logolink" onclick="window.location='http://tool.chinaz.com/'"></div>
+<div class="topbanner"><iframe frameborder="0" src="http://images.chinaz.com/tool/banner.htm" width="468" height="60" scrolling="no"></iframe></div>
+<div class="banneright" id="banneright"></div>
+</div>
+
+<!--menu-->
+<div class="menu"><a href="http://tool.chinaz.com/" class="select">站长工具</a>
+<a onmouseover="mouseover(this, 3)" onmouseout="mouseout()">网站信息查询</a>
+<a onmouseover="mouseover(this, 4)" onmouseout="mouseout()">SEO信息查询</a>
+<a onmouseover="mouseover(this, 5)" onmouseout="mouseout()">域名/IP类查询</a>
+<a onmouseover="mouseover(this, 6)" onmouseout="mouseout()">代码转换工具</a>
+<a onmouseover="mouseover(this, 7)" onmouseout="mouseout()" href="#b_15" title="转到工具导航">其他工具</a>
+<a href="http://logo.chinaz.com/">LOGO在线制作</a>
+<a href="http://bm.chinaz.com/" target="_blank">网站保姆</a>
+<a href="http://mytool.chinaz.com/" target="_blank"><img src="/template/default/images/mytoolbutton.jpg" style=" margin-top:9px;margin-left:15px;" alt="我的工具" /></a>
+</div>
+
+<!--sub menu-->
+<div id="menu3" class="menu-list" onmouseover="_mouseover()" onmouseout="_mouseout()">
+<ul>
+<li><a href="http://alexa.chinaz.com" target="_blank">ALEXA排名查询</a></li>
+<li><a href="http://tool.chinaz.com/Links/">死链接检测</a></li>
+<li><a href="http://tool.chinaz.com/Tools/Density.aspx">关键词密度检测</a></li>
+<li><a href="http://tool.chinaz.com/Tools/MetaCheck.aspx">META信息检测</a></li>
+<li><a href="http://tool.chinaz.com/Gzips/">网页GZIP压缩</a></li>
+<li><a href="http://tool.chinaz.com/ExportPR/">PR输出值查询</a></li>
+<li><a href="http://tool.chinaz.com/Tools/PageCode.aspx">查看网页源代码</a></li>
+</ul>
+</div>
+
+<div id="menu4" class="menu-list" onmouseover="_mouseover()" onmouseout="_mouseout()">
+<ul>
+<li><a href="http://seo.chinaz.com">SEO综合查询</a></li>
+<li><a href="http://link.chinaz.com">友情链接检测</a></li>
+<li><a href="http://tool.chinaz.com/KeyWords/">关键词排名查询</a></li>
+<li><a href="http://tool.chinaz.com/kwevaluate/">关键词优化分析</a></li>
+<li><a href="http://tool.chinaz.com/baidu/">百度近日收录</a></li>
+<li><a href="http://pr.chinaz.com">PR查询</a></li>
+<li><a href="http://mytool.chinaz.com/baidusort.aspx" target="_blank">百度权重查询</a></li>
+<li><a href="http://tool.chinaz.com/baidu/words.aspx">百度指数分析</a></li>
+<li><a href="http://tool.chinaz.com/seocheck">SEO优化建议</a></li>
+<!--<li><a href="http://tool.chinaz.com/link.aspx">反链查询</a></li>-->
+</ul>
+</div>
+
+<div id="menu5" class="menu-list" onmouseover="_mouseover()" onmouseout="_mouseout()">
+<ul>
+<li><a href="http://tool.chinaz.com/DomainDel/">域名删除时间</a></li>
+<li><a href="http://ip.chinaz.com">IP查询</a></li>
+<li><a href="http://whois.chinaz.com/">WHOIS查询</a></li>
+<li><a href="http://del.chinaz.com/" target="_blank">过期域名查询</a></li>
+<li><a href="http://tool.chinaz.com/Same/">同IP网站查询</a></li>
+<li><a href="http://tool.chinaz.com/beian.aspx">网站备案查询</a></li>
+<li><a href="http://tool.chinaz.com/dns/">DNS查询</a></li>
+<li><a href="http://tool.chinaz.com/nslookup/">NsLookup</a></li>
+</ul>
+</div>
+
+<div id="menu6" class="menu-list" onmouseover="_mouseover()" onmouseout="_mouseout()">
+<ul>
+<li><a href="http://tool.chinaz.com/Tools/MD5.aspx">MD5加密</a></li>
+<li><a href="http://tool.chinaz.com/js.aspx">JS综合工具</a></li>
+<li><a href="http://tool.chinaz.com/robots/">robots.txt生成</a></li>
+<li><a href="http://tool.chinaz.com/regex/">正则表达式测试</a></li>
+<li><a href="http://tool.chinaz.com/Tools/URLEncode.aspx">URL编码/解码</a></li>
+<li><a href="http://tool.chinaz.com/Tools/CssFormat.aspx">Css压缩格式化</a></li>
+<li><a href="http://tool.chinaz.com/Tools/JsFormat.aspx">HTML/JS格式化</a></li>
+</ul>
+</div>
+
+<div id="menu7" class="menu-list" onmouseover="_mouseover()" onmouseout="_mouseout()">
+<ul>
+<li><a href="http://tool.chinaz.com/history/">网站历史记录</a></li>
+<li><a href="http://ping.chinaz.com/">超级Ping</a></li>
+<li><a href="http://tool.chinaz.com/Tracert/">路由器追踪</a></li>
+<li><a href="http://tool.chinaz.com/pagestatus/">HTTP状态查询</a></li>
+<li><a href="http://s.chinaz.com" target="_blank">常用软件下载</a></li>
+<li><a href="http://tool.chinaz.com/port/">端口扫描</a></li>
+<li><a href="http://tool.chinaz.com/speedtest.aspx">网速测试</a></li>
+</ul>
+</div>
+
+<!--sub menu-->
+<!--main-->
+<div class="main"><style>
+#detail table{ margin-bottom:5px; }
+.detail ul {  width:865px;  }
+.detail {padding-left:1px;}
+.detail li{ width:107px;}
+#seoinfo td{ line-height:18px;}
+.fw  td{border:solid 1px #b2b2b2;height:25px;}
+.seosearch{  text-align:left; padding:5px; margin-top:5px;word-break:break-all;word-wrap:break-word;}
+.seosearch a{ display: inline-block;}
+</style>
+<form id="form1">
+<div class="box">
+  <div id="b_1">
+	<h1><div class="titleft"><a href="http://seo.chinaz.com">SEO综合查询</a></div><div class="titright"><font color=red>New</font>：<a href="http://outlink.chinaz.com">反链查询</a>&nbsp;<font color=#3333FF>|</font>&nbsp;<a href="http://tool.chinaz.com/kwevaluate/">关键词优化难易分析</a></div></h1>
+	<div class="box1" style="text-align:center;">
+	<div class="info3" >
+	请输入网站地址：<input type="text" id="q" name="host" url="true" autocomplete="off" value="www.163.com" class="input" style="width:250px" /><input id="btnSearch" type="submit" class="but" value="查 询"/>
+        <div style=" font-size: 13px; ">
+            <input type="checkbox" onclick="checkonclick(this)"  name="c" id="c" value="0"   />
+            <label onclick="checkonclick1()" style="cursor:pointer; _display:inline-block;">更新网页缓存</label>&nbsp;&nbsp;<select style="height: 22px; font-size: 13px;"  
+                id="m" name="m"  disabled="disabled">
+                <option value="1" selected="selected">Baidu蜘蛛模拟</option>
+                <option value="2">Google蜘蛛模拟</option>
+                <option value="0">正常访问</option>
+            </select></div>
+           
+    	</div>
+
+	<div id="detail">
+								<table class="seo"  cellpadding="5" cellspacing="1" id="seoinfo">
+			<tr class="seo_head"><td colspan="3"><span style=" float:right; padding-right:10px; "><a href="http://www.chaoji.com/seoreport.aspx" target="_blank"><font color="blue">SEO数据风向标</font></a></span><span style=" padding-left:50px;">网站基本信息</span> </td></tr>
+		  <tr  align="center" style=" background:white; color:#0269AC;"><td colspan=3 >网易</td></tr>				<tr class="seo_item">
+				<td title="Seo信息"  style=" width:70px; "><font color=#0269AC>SEO信息</font></td>
+				<td  style="background:#fff;" ><span style=" margin-left:5px;">百度权重 <a href="http://mytool.chinaz.com/baidusort.aspx?host=www.163.com" target="_blank"><img src="/template/default/images/baiduapp/8.gif" /></a></span> <span id="pr">Google <img src="/template/default/images/ranks/Rank_8.gif" /></span> 
+				&nbsp;&nbsp;反链数:<span id="outlink"><img src="/template/default/images/spinner.gif" /></span><span style=" margin-left:5px;"> 响应时间: <font color="red" id="timeused"><img src="/template/default/images/spinner.gif" /></font></span></td> 
+				<td rowspan=4  style=" width:180px;"><img    width="120"  height="120"  src="http://open.thumbshots.org/image.pxf?url=http://www.163.com/" alt="网站截图 " /></td>
+			</tr>
+			 
+			<tr class="seo_item">
+				<td title="域名IP"  style=" width:70px;"><font color=#0269AC>域名IP</font></td><td >115.238.175.238[浙江省宁波市 电信]</td>
+			</tr>
+		   		   			<tr class="seo_item">
+				<td title="域名年龄" style=" width:70px;"><font color=#0269AC>域名年龄</font></td><td ><font color=red>14年11个月16天</font>（创建于<font color=red>1997年09月15日</font>,过期时间为<font color=red>2018年09月14日</font>)</td>
+			</tr>
+					   					
+		   <tr class="seo_item">         
+		   <td title="更多查询" style=" width:70px;"><font color=#0269AC>更多查询</font></td><td>
+		   <a href="http://alexa.chinaz.com/?domain=www.163.com" target="_blank">ALEXA排名</a>
+		   <span style=" margin-left:20px;"><a href="http://link.chinaz.com/?wd=www.163.com" target="_blank">友情链接检测</a></span>
+		   <span style=" margin-left:20px;"><a href="http://tool.chinaz.com/history/?domain=www.163.com" target="_blank">网站历史数据</a></span>
+		   <span style=" margin-left:20px;"><a href="http://whois.chinaz.com/www.163.com" target="_blank">Whois查询</a></span>
+		   <span style=" margin-left:20px;"><a href="http://tool.chinaz.com/beian.aspx?s=www.163.com" target="_blank">备案查询</a></span>
+		   <span style=" margin-left:20px;"><a href="http://top.chinaz.com/Search.aspx?url=www.163.com" target="_blank" style=" color:Red;">网站排名</a></span></td>           
+			</tr>
+
+			   						<tr class="seo_item">
+				<td title="域名备案" style=" width:70px;"><font color=#0269AC>域名备案</font></td>
+				<td colspan=2  ><font color=#0269AC>备案号:&nbsp;</font>粤B2-20090191-18&nbsp;&nbsp;<font color=#0269AC>性质:&nbsp;</font>企业&nbsp;&nbsp;<font color=#0269AC>名称:&nbsp;</font>广州网易计算机系统有限公司&nbsp;&nbsp;<font color=#0269AC>审核时间:&nbsp;</font>2011-10-20 </td>
+			</tr>
+		   		   		</table>       
+		<script>
+	ajaxget('/ajaxsync.aspx?at=pr&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&url=www.163.com', 'pr');
+	ajaxget("/AjaxSeo.aspx?t=time&host=www.163.com&ip=0","timeused");
+    ajaxget("/AjaxSeo.aspx?t=outlink&host=www.163.com","outlink");
+    function timeretry()
+    {
+    document.getElementById('timeused').innerHTML="<img src='/template/default/images/spinner.gif' />";
+    ajaxget("/AjaxSeo.aspx?t=time&host=www.163.com&ip=0","timeused");
+    }
+	
+</script>
+		<table class="seo"  cellpadding="5" cellspacing="1">
+			<tr class="seo_head" align="center"><td colspan=6>百度相关</td></tr><tr class="seo_item">
+				<td title="包含www.163.com的所有网页">有www.163.com的网页</td><td>百度流量预计</td><td>百度快照</td><td>今日收录</td><td>最近一周</td><td>最近一月</td>
+			</tr>
+			<tr class="seo_item">                
+				<td><span id='seo_BaiduFindDN'>-</span></td>
+				<td><a href="http://mytool.chinaz.com/baidusort.aspx?host=www.163.com" target="_blank">24万8802</a></td>
+				<td><span id='seo_BaiduSnap'>-</span></td>
+				<td><span id='seo_BaiduToday'>-</span></td>
+				<td><span id='seo_BaiduWeek'>-</span></td>
+				<td><span id='seo_BaiduMonth'>-</span></td>                
+			</tr>
+		</table>
+		<table class="seo" cellpadding="5" cellspacing="1">
+			<tr class="seo_head" align="center">
+				<td colspan="7">网站&nbsp;<A href="http://www.163.com" target="_blank">www.163.com</A> 的收录/反链结果</td>
+			</tr>
+			<tr class="seo_item">
+				<td width="11%"><font color="#0269AC">搜索引擎</font></td>
+				<td>百度</td><td>谷歌</td><td>SOSO</td><td>搜狗</td><td>Bing</td><td>有道</td>
+			</tr>
+			 <tr class="seo_item">
+				<td width="11%"><font color="#0269AC">收录</font></td>
+				<td><span id='seo_BaiduPages'>-</span><span><img src='/template/default/images/up.gif'/></span></td>
+				<td><span id='seo_GooglePages'>-</span><span><img src='/template/default/images/down.gif'/></span></td>
+				<td><span id='seo_SosoPages'>-</span><span><img src='/template/default/images/up.gif'/></span></td>
+				<td><span id='seo_SogouPages'>-</span><span><img src='/template/default/images/down.gif'/></span></td>                
+				<td><a href="http://cn.bing.com/search?q=site%3Awww.163.com" target="_blank">查询</a> </td>
+				<td><a href="http://www.youdao.com/search?q=site%3Awww.163.com" target="_blank">查询</a></td>                
+			</tr>
+			<tr class="seo_item">
+				<td width="11%"><font color="#0269AC">反链</font></td>
+				<td><span id='seo_BaiduLink'>-</span><span><img src='/template/default/images/up.gif'/></span></td>
+				<td><span id='seo_GoogleLink'>-</span></td>
+				<td><span id='seo_SosoLink'>-</span><span><img src='/template/default/images/down.gif'/></span></td>
+				<td><a href="http://www.sogou.com/web?query=%22www.163.com%22" target="_blank">查询</a></td>
+				<td><a href="http://cn.bing.com/search?q=%22www.163.com%22" target="_blank">查询</a> </td>                
+				<td><span id='seo_YoudaoLink'>-</span></td>                
+			</tr>
+		</table>
+		<div style=" clear:both;"></div>
+		<div style=" padding-top:3px;">
+		<div style=" border:1px solid #b2b2b2;"><iframe frameborder="0" marginwidth="0" marginheight="0" height="45" scrolling="no" width="100%"  src="http://images.chinaz.com/tool/tl3.htm"></iframe></div>
+		</div>
+				<div class="detail" align="center">
+			<ul class="head"><li>日期</li><li>百度收录</li><li>Google收录</li><li>搜搜收录</li><li>搜狗收录</li><li>百度当日收录</li><li>百度反链</li><li>有道反链</li></ul>
+<ul onmouseover="this.style.background ='#e5eff8';" onmouseout="this.style.background ='';"><li>2012-08-22</li><li>636</li><li>3070</li><li>396</li><li>1万9907</li><li>428</li><li>148万</li><li>39万1000</li></ul>
+<ul onmouseover="this.style.background ='#e5eff8';" onmouseout="this.style.background ='';"><li>2012-08-21</li><li>638</li><li>3140</li><li>588</li><li>1万7742</li><li>428</li><li>149万</li><li>39万1000</li></ul>
+<ul onmouseover="this.style.background ='#e5eff8';" onmouseout="this.style.background ='';"><li>2012-08-20</li><li>653</li><li>3200</li><li>236</li><li>1万7365</li><li>419</li><li>148万</li><li>39万1000</li></ul>
+
+		</div>
+			   <a  id="refresh" name="refresh"></a> 
+		<table class="seo" cellpadding="5" cellspacing="1">            
+			<tbody>
+				<tr style="background-color: #D4E6F7; font-size:13px;">
+					<td width="120px">标签</td>
+					<td width="70px">内容长度</td>
+					<td style="padding-left:10px;" >内容(<font color=blue>于2012年08月23日缓存)</td>
+					<td align="center" width="120px">优化建议</td>
+				</tr>
+				<tr style="background-color: #FFFFFF; font-size:13px;">
+					<td width="120px"><font color="#0269AC">标题（Title）</font></td>
+					<td><font color="red">2</font> 个字符</td>
+					<td style="padding-left:10px;">网易 </td>
+					<td>一般不超过80个字符</td>
+				</tr>
+				<tr style="background-color: #FFFFFF; font-size:13px;">
+					<td width="120px"><font color="#0269AC">关键词（KeyWords）</font></td>
+					<td><font color="red">47</font> 个字符</td>
+					<td style="padding-left:10px;">网易,邮箱,游戏,新闻,体育,娱乐,女性,亚运,论坛,短信,数码,汽车,手机,财经,科技,相册</td>
+					<td>一般不超过100个字符</td>
+				</tr>
+				<tr style="background-color: #FFFFFF; font-size:13px;">
+					<td width="120px"><font color="#0269AC">描述（Description）</font></td>
+					<td><font color="red">78</font> 个字符</td>
+					<td style="padding-left:10px;">网易是中国领先的互联网技术公司，为用户提供免费邮箱、游戏、搜索引擎服务，开设新闻、娱乐、体育等30多个内容频道，及博客、视频、论坛等互动交流，网聚人的力量。</td>
+					<td>一般不超过200个字符</td>
+				</tr>
+				<tr class="seo_item">
+					<td colspan="4" align="center">
+						<a href="http://ip.chinaz.com/?ip=www.163.com" target=_blank>IP地址查询</a>
+ - <a href="http://pr.chinaz.com/?PRAddress=www.163.com" target=_blank><font color='black'>PR查询</font></a>
+ - <a href="http://whois.chinaz.com/www.163.com" target=_blank>域名Whois查询</a>
+ - <a href="http://tool.chinaz.com/Seos/Sites.aspx?host=www.163.com" target=_blank><font color='black'>网站收录查询</font></a>
+ - <a href="http://alexa.chinaz.com/?Domain=www.163.com" target=_blank>Alexa排名查询</a>
+ - <a href="http://link.chinaz.com/?wd=www.163.com" target=_blank><font color='black'>友情链接查询</font></a>
+ - <a href="http://mytool.chinaz.com/baidusort.aspx?host=www.163.com" target=_blank>百度权重查询</a>
+ - <a href="http://tool.chinaz.com/beian.aspx?s=www.163.com" target=_blank><font color='black'>网站备案查询</font></a>
+ - <a href="http://tool.chinaz.com/Same/?s=www.163.com" target=_blank>IP反查</a>
+ - <a href="http://tool.chinaz.com/history/?domain=www.163.com" target=_blank><font color='black'>网站历史记录</font></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+				<table class="seo" cellpadding="5" cellspacing="1">
+			<tr class="seo_head" align="center">
+				<td>关键词</td><td>出现频率</td><td>2%≦密度≦8%</td><td>百度指数</td><td>百度排名</td><td>Google排名</td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>网易</td>
+				<td>47</td>
+				<td>0.4%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%cd%f8%d2%d7' target=_blank>48443</a></td>
+				<td id='baidu_0'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=4QAibUp94ZY=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=0','baidu_0')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=网易' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>邮箱</td>
+				<td>22</td>
+				<td>0.2%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%d3%ca%cf%e4' target=_blank>16656</a></td>
+				<td id='baidu_1'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=oeTsJPrfF9g=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=1','baidu_1')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=邮箱' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>游戏</td>
+				<td>26</td>
+				<td>0.2%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%d3%ce%cf%b7' target=_blank>74591</a></td>
+				<td id='baidu_2'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=E9f9LLFMWsY=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=2','baidu_2')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=游戏' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>新闻</td>
+				<td>15</td>
+				<td>0.1%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%d0%c2%ce%c5' target=_blank>23273</a></td>
+				<td id='baidu_3'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=pB4NKx|oe08=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=3','baidu_3')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=新闻' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>体育</td>
+				<td>3</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%cc%e5%d3%fd' target=_blank>6548</a></td>
+				<td id='baidu_4'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=CQR11PYCvRE=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=4','baidu_4')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=体育' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>娱乐</td>
+				<td>5</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%d3%e9%c0%d6' target=_blank>4654</a></td>
+				<td id='baidu_5'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=MHum9/dETpg=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=5','baidu_5')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=娱乐' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>女性</td>
+				<td>1</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%c5%ae%d0%d4' target=_blank>2715</a></td>
+				<td id='baidu_6'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=GhmX67lrkUM=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=6','baidu_6')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=女性' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>亚运</td>
+				<td>0</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%d1%c7%d4%cb' target=_blank>97</a></td>
+				<td id='baidu_7'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=jvmxItL8wbQ=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=7','baidu_7')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=亚运' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>论坛</td>
+				<td>18</td>
+				<td>0.2%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%c2%db%cc%b3' target=_blank>5012</a></td>
+				<td id='baidu_8'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=KjEraiirDCE=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=8','baidu_8')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=论坛' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>短信</td>
+				<td>0</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%b6%cc%d0%c5' target=_blank>1889</a></td>
+				<td id='baidu_9'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=0fNrk0gmoOs=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=9','baidu_9')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=短信' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>数码</td>
+				<td>3</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%ca%fd%c2%eb' target=_blank>897</a></td>
+				<td id='baidu_10'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=yXk6AL8HoJ4=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=10','baidu_10')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=数码' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>汽车</td>
+				<td>7</td>
+				<td>0.1%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%c6%fb%b3%b5' target=_blank>30205</a></td>
+				<td id='baidu_11'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=kAll5mPun3M=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=11','baidu_11')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=汽车' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>手机</td>
+				<td>18</td>
+				<td>0.2%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%ca%d6%bb%fa' target=_blank>71893</a></td>
+				<td id='baidu_12'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=Tx31B61|cHo=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=12','baidu_12')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=手机' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>财经</td>
+				<td>4</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%b2%c6%be%ad' target=_blank>1521</a></td>
+				<td id='baidu_13'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=47ls5/iV9zQ=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=13','baidu_13')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=财经' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>科技</td>
+				<td>3</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%bf%c6%bc%bc' target=_blank>999</a></td>
+				<td id='baidu_14'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=ZHPHDRaix0w=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=14','baidu_14')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=科技' target=_blank>查看</a></td>
+			</tr>
+						<tr class="seo_item" align="center">
+				<td>相册</td>
+				<td>3</td>
+				<td>0.0%</td>
+				<td><a href='http://index.baidu.com/main/word.php?word=%cf%e0%b2%e1' target=_blank>956</a></td>
+				<td id='baidu_15'><a href="javascript:GetKeyWord('/ajaxsync.aspx?at=keywordloc&wd=rYsAhkeffTI=&enkey=0U5|6pQ8l6mg/qVF1il0AdbSplSvvItm&dn=www.163.com&se=0&htmlid=15','baidu_15')">查询</a></td>
+				<td ><a href='http://www.google.com.hk/search?hl=zh-CN&source=hp&q=相册' target=_blank>查看</a></td>
+			</tr>
+					</table>
+				 
+		 <table width="100%" border="1" style="border-collapse:collapse; border:solid 1px #b2b2b2;" class="fw">
+  <tr>
+	<td colspan="2" width="67%" style=" background-color:#d4e6f7;">服务器信息</td>
+	<td width="33%" style="background-color:#d4e6f7;">网页压缩检测</td>
+  </tr>
+  <tr>
+	<td >协议类型</td>
+	<td >HTTP/1.1 200 OK </td>
+	<td style="line-height:30px;">网页是否压缩：<font color="blue">是</font>	  </td>
+  </tr>
+  <tr>
+	<td>页面类型</td>
+	<td> text/html; charset=GBK  </td>
+	<td>原网页大小:<font color="blue">424149</font></td>
+	</tr>
+  <tr>
+	<td>服务器类型</td>
+	<td> nginx  </td>
+	<td>压缩后大小:<font color="blue">120354</font></td>
+	</tr>
+  <tr>
+	<td>程序支持</td>
+	<td> </td>
+	<td>压缩比(估计值):<font color="blue">71.62% </font></td>
+	</tr>
+
+</table>
+
+	<table class="seo" cellpadding="5" cellspacing="1">
+			<tr class="seo_head" align="center"><td>Alexa排名趋势</td></tr>
+			<tr class="seo_item">
+				<td><div><img id="alexaimg" src="http://traffic.alexa.com/graph?w=800&h=250&r=6m&y=t&u=www.163.com" /></div>
+				</td>
+			</tr>
+		</table>    
+		<table class="seo" cellpadding="5" cellspacing="1">
+			 <tr class="seo_head" align="center"><td><span style=" float:right; padding-right:5px;"><a target="_blank" style="color:green" href="http://tool.chinaz.com/Tools/Robot.aspx?url=www.163.com">点击查看全部</a></span>搜索蜘蛛、机器人模拟</td></tr>
+		  
+		</table> 
+						</div>
+    <div class="seosearch">最近查询: <a href="http://seo.chinaz.com/?host=www.if4ever.com">www.if4ever.com</a>&nbsp;&nbsp;&nbsp<a href="http://seo.chinaz.com/?host=www.163.com">www.163.com</a>&nbsp;&nbsp;&nbsp</div>	</div>
+	
+  </div>
+</div>
+</form>
+<script type="text/javascript">    
+	function SeoFocus() {
+		document.getElementById("q").focus();
+		document.getElementById("q").select();
+	}
+	SeoFocus();
+    function checkonclick(obj)
+    {
+    if(obj.checked==true)
+    {
+    obj.value="1";
+    document.getElementById("m").disabled=false;
+    }
+    else
+    {
+    obj.value="0";
+     document.getElementById("m").disabled=true;
+     }
+    }
+    function checkonclick1()
+    {
+    if(document.getElementById("c").checked==true)
+    {
+    document.getElementById("c").checked=false;
+    document.getElementById("c").value="0";
+    document.getElementById("m").disabled=true;
+    }
+    else
+    {
+    document.getElementById("c").checked=true;
+    document.getElementById("c").value="1";
+     document.getElementById("m").disabled=false;
+     }
+    }
+    
+	function GetKeyWord(ajaxurl, id) {
+		document.getElementById(id).innerHTML = "<img src='/template/default/images/spinner.gif' border='0' />";
+		ajaxget(ajaxurl,id);
+	}
+	
+        document.getElementById("m").value='1';
+    	   
+</script>
+	<div style="display:none"><iframe src="/ajaxiframe.aspx?q=www.163.com" frameborder="0" width="0" height="0"></iframe></div><div style="border: 1px solid #BBD7E6;padding:5px;margin:10px 0px 10px 0px;background-color:#FFFFFF;" align="center">
+<iframe frameborder="0" marginwidth="0" marginheight="0" scrolling="no" width="98%" height="65" src="http://images.chinaz.com/tool/wz2.htm"></iframe>
+</div>
+<div style="margin:0px 0px 4px 0px;_margin:-10px 0px 4px 0px;" >
+<iframe frameborder="0" marginwidth="0" marginheight="0" style="margin-top:-5px;" scrolling="no" width="100%" height="40" src="http://images.chinaz.com/tool/tl2.htm"></iframe>
+</div>
+<div class="box">
+    <div id="b_14">
+    <h1><div style="float:left;">工具简介</div><div style="float:right; "><a style="color:red;" href="http://www.313.com/agent/?s=tool" target=_blank>建站更简单，就找313！全国分销商招募中，现在加入，更多优惠。</a></div></h1>
+    <div class="box1">
+    <span  class="info2" style=" font-size: 14px; line-height: 24px; text-align: left;white-space:normal; width:860px;overflow:hidden;">
+    SEO综合查询
+    </span>
+    </div>
+    </div>
+<div style=" height:5px;"></div>
+</div>
+</div>
+<div class="box">
+<h1><div style="float:left;">工具导航地图</div></h1>
+<div class="box1">
+<ul class="toolist" style=" border-bottom:0px; padding-bottom:-2px !important; padding-bottom:3px;">
+<li>网站信息查询：<a href="http://alexa.chinaz.com/" target="_blank" class="imt">ALEXA排名查询</a></li><li>-</li>
+<li><a href="http://pr.chinaz.com" target="_blank" class="imt">Google PR查询</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Seos/Sites.aspx" target="_blank" class="imt">收录/反链查询</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Links/" target="_blank" class="imt">死链接检测/全站PR查询</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Gzips/" target="_blank">网页GZIP压缩检测</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/ExportPR/" target="_blank"  class="imt">PR输出值查询</a></li></ul>
+<ul class="toolist">
+<li>搜索优化查询：<a href="http://tool.chinaz.com/baidu/words.aspx" target="_blank">长尾关键字</a></li>
+<li><a href="http://link.chinaz.com/" target="_blank" class="imt">友情链接检测</a></li>
+<li><a href="http://tool.chinaz.com/KeyWords/" target="_blank"  class="imt">关键词排名查询</a></li>
+<li><a href="http://tool.chinaz.com/Tools/Density.aspx" target="_blank" class="imt">关键词密度查询</a></li>
+<li><a href="http://tool.chinaz.com/Tools/Robot.aspx" target="_blank" class="imt">搜索引擎模拟</a></li>
+<li><a href="http://tool.chinaz.com/Tools/MetaCheck.aspx" target="_blank">网页META信息</a></li>
+<li><a href="http://tool.chinaz.com/baidu/" target="_blank">百度收录</a></li>
+<li><a href="http://mytool.chinaz.com/baidusort.aspx" target="_blank"  class="imt">百度权重查询</a></li>
+</ul>
+<ul class="toolist">
+<li>域名IP类查询：<a href="http://tool.chinaz.com/DomainDel/" target="_blank" class="imt">域名删除时间查询</a></li>
+<li><a href="http://whois.chinaz.com/" target="_blank" class="imt">域名WHOIS查询</a></li>
+<li><a href="http://ip.chinaz.com" target="_blank" class="imt">IP查询</a></li>
+<li><a href="http://tool.chinaz.com/ipWhois/" target="_blank">IP WHOIS查询</a></li>
+<li><a href="http://tool.chinaz.com/Same/" target="_blank" class="imt">同IP网站查询</a></li>
+<li><a href="http://tool.chinaz.com/beian.aspx" target="_blank" class="imt">备案查询</a></li>
+<li><a href="http://del.chinaz.com/" target="_blank" style="color:Red">过期域名查询</a></li>
+<li><a href="http://tool.chinaz.com/dns" target="_blank"  style="color:Red" class="imt">Dns查询</a></li>
+<li><a href="http://tool.chinaz.com/nslookup" target="_blank"  style="color:Red" class="imt">NsLookup</a></li>
+</ul>
+<ul class="toolist">
+<li>加密解密相关：<a href="http://tool.chinaz.com/Tools/MD5.aspx" target="_blank" class="imt">MD5加密</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/TextEncrypt.aspx" target="_blank">文字加密解密</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/Escape.aspx" target="_blank">ESCAPE加/解密</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/Base64.aspx"target="_blank">BASE64加/解密</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/UrlCrypt.aspx" target="_blank">URL加密</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/Thunder_FlashGet.aspx" target="_blank">迅雷,快车,旋风URL加/解密</a></li>
+</ul>
+<ul class="toolist">
+<li>编码转换相关：<a href="http://tool.chinaz.com/Tools/native_ascii.aspx" target="_blank" style="color:blue">Ascii/Native编码互转</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/Unicode.aspx" target="_blank">Unicode编码</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/UTF-8.aspx" target="_blank">UTF-8编码</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/Gb_big.aspx" target="_blank">简繁体火星文互转</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/Word_Spell.aspx" target="_blank">汉字转换拼音</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/unixtime.aspx" target="_blank">Unix时间戳</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/URLEncode.aspx" target="_blank"  class="imt">URL编码/解码</a></li>
+</ul>
+<ul class="toolist">
+<li>HTML相关类： <a href="http://tool.chinaz.com/Tools/Html_Js.aspx" target="_blank" class="imt">HTML/JS互转</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/Html_Ubb.aspx" target="_blank">HTML/UBB代码转换</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/htmlcheck.aspx" target="_blank" class="imt">HTML标签检测</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/HtmlCodeCov.aspx" target="_blank">HTML代码转换器</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/JsFormat.aspx" target="_blank" class="imt">JS/HTML格式化</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/HtmlChar.aspx" target="_blank" class="imt">HTML特殊符号对照表</a></li>
+</ul>
+<ul class="toolist">
+<li>Js/Css相关类： <a href="http://tool.chinaz.com/Tools/ScriptEncode.aspx" target="_blank" class="imt">JS加/解密</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/JsCodeConfusion.aspx" target="_blank">JS代码混淆</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/CssDesigner.aspx" target="_blank">CSS在线编辑器</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/CssFormat.aspx" target="_blank" class="imt">Css压缩/格式化</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/js.aspx" target="_blank" class="imt">JS混淆加密压缩</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/regex" target="_blank"  style="color:Red" class="imt">正则在线测试</a></li>
+</ul>
+<ul class="toolist">
+<li>其他常用测试：<a href="http://tool.chinaz.com/Tools/PageCode.aspx" target="_blank" class="imt">查看网页源代码</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/PinYinDictionary.aspx" target="_blank">拼音字典</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/OpenWeb.aspx" target="_blank" class="imt">OPEN参数生成器</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/Webdebugger.aspx" target="_blank">网页代码调试器</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/OnlineColor.aspx" target="_blank">在线调色板</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/PageColor.aspx" target="_blank">网页颜色选择器</a></li><li>-</li>
+<li><a href="http://tool.chinaz.com/Tools/SelectColor.aspx" target="_blank" class="imt">颜色代码查询</a></li>
+</ul>
+<ul class="toolist">
+<li>其他类别查询：<a href="http://mytool.chinaz.com/seoreport.aspx" target="_blank"  style="color:Red" class="imt">SEO数据风向标</a></li>
+<li><a href="http://mytool.chinaz.com/prhistory.aspx" target="_blank" class="imt">PR更新历史</a></li>
+<li><a href="http://tool.chinaz.com/Tools/lowercase-uppercase.aspx" target="_blank">大小写转换</a></li>
+<li><a href="http://tool.chinaz.com/Tracert/" target="_blank">路由器追踪</a></li>
+<li><a href="http://tool.chinaz.com/pagestatus/" target="_blank">HTTP状态查询</a></li>
+<li><a href="http://ping.chinaz.com/" target="_blank" class="imt">超级Ping</a></li>
+<li><a href="http://tool.chinaz.com/port/" target="_blank" class="imt">端口扫描</a></li>
+<li><a href="http://tool.chinaz.com/speedtest.aspx" target="_blank">网速测试</a></li>
+<li><a href="http://www.idc123.com/" target="_blank">虚拟主机评测</a></li>
+<li><a href="http://www.91cha.com/" target="_blank">91查</a></li>
+</ul>
+<div style="clear:both;"></div>
+</div>
+</div>
+<div style=" height:5px;"></div>
+<div class="bot-nav">
+<a href="http://www.chinaz.com/about/" target="_blank">关于站长之家</a> |
+<a href="http://www.chinaz.com/about/contact.asp?tool" target="_blank">联系我们</a> |
+<a href="http://www.chinaz.com/about/a.asp" target="_blank">广告服务</a> |
+<a href="http://www.chinaz.com/about/link.asp" target="_blank">友情链接</a> |
+<a href="http://www.chinaz.com/about/sitemap.asp" target="_blank">网站地图</a> |
+<a href="http://www.chinaz.com/about/announce.asp" target="_blank">版权声明</a> |
+<a href="http://www.chinaz.com/about/job.asp" target="_blank">人才招聘</a> |
+<a href="http://www.chinaz.com/about/faq.asp" target="_blank">帮助</a>
+</div>
+<div onmouseout='BoxHide()' onmouseover="this.style.display='block'" id="ToolBox">
+<div id="xhead"></div>
+<ul id="xlist"></ul>
+<div id="xfoot"></div>
+</div>
+<script type="text/javascript">Init();</script>
+<script type="text/javascript" src="http://images.chinaz.com/tool/wz3.js" language="JavaScript"></script>
+<script type="text/javascript" src="http://my.chinaz.com/_topbar.aspx?proxy=/httpproxy.aspx" charset="utf-8"></script>
+<div class="foot">
+&copy; CopyRight 2002-2012, <a href="http://www.chinaz.com">CHINAZ.COM</a>, Inc.All Rights Reserved. 
+<script src='http://s16.cnzz.com/stat.php?id=1444&web_id=1444' language='JavaScript' charset='gb2312' type="text/javascript"></script><br>
+<u>闽ICP备08105208号</u> <u>增值电信业务经营许可证闽B2-20120007号</u>
+</div>
+</div>
+</body>
+</html>
