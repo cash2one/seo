@@ -74,7 +74,9 @@ def get_query_of_group(group, sqlconn):
     if len(group_info) != 1:
         return ''
     url = group_info[0][4]
-    #print url, sug_word
+    #if url.strip() == '':
+    #    return ''
+    print url, sug_word
     my_rank, my_rank_url = BaiduRank.GetBaiduPageFull(sug_word, url)
     #print my_rank, my_rank_url
     ret_dic = {'rank':my_rank,
