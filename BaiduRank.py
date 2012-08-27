@@ -173,6 +173,7 @@ def get_rank_of_group(group, sqlconn):
         ret.append('unknown flow')
         print ret
         sqlconn.insert_multi(ret, 'rank_compare')
+        time.sleep(5)
 
 def thread_rank(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
