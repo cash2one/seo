@@ -28,6 +28,7 @@ class FindUrlParser(HTMLParser.HTMLParser):
                     except:
                         self.ret_tmp = 0
                 if key == 'mu':
+                    #print value, self.url
                     if value.find(self.url) != -1:
                         self.rank = self.ret_tmp
                         self.rank_url = value
@@ -53,6 +54,8 @@ def GetFixLink(html_src):
     idx = 0
     ret = []
     table_section = FindSection(html_src, '<table', '</table>')
+    if len(table_section) == 0:
+        return ['error link']
     right_rank = FindSection(table_section[0], '<font size="-1" color="#008000"', '</font>')
     left_rank = []
     for item in table_section[1:]:
@@ -93,6 +96,7 @@ def GetBaiduNatureRank(html_src, target_url):
         idx, content = find_table(html_src, idx)
         if idx == -1:
             break
+        #print content
         htmlparser.feed(content)
         if htmlparser.rank != 0:
             return htmlparser.rank, htmlparser.rank_url
@@ -106,13 +110,14 @@ def GetBaiduPage(key, page_num=0):
     url_domain = 'http://www.baidu.com/s?'
     url = url_domain + url_attrs + '&wd='
     url += key.encode('utf-8')
-    print 'try load', url.decode('utf-8').encode('gbk')
+#    print 'try load', url.decode('utf-8').encode('gbk')
 
     html_src = urllib.urlopen(url).read()
     try:
         html_src = html_src.decode('utf-8')
     except:
-        print 'decode error, continue...'
+        print 'decode html_src of', url, 'error, continue...'
+        print html_src
 
     return html_src
     #return GetBaiduNatureRank(html_src, target_url)
