@@ -123,9 +123,9 @@ def get_sug_of_group(group, sqlconn):
                 #print item
 
     # 更新状态为抓取推荐词完成
-    ret_dic = {'status':'1'}
-    s_dic = {'groupid':str(group[0])}
-    sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
+#    ret_dic = {'status':'1'}
+#    s_dic = {'groupid':str(group[0])}
+#    sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
 
 def thread_query(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
@@ -145,13 +145,13 @@ def thread_sug(sqlconn_name):
         get_sug_of_group(group, sqlconn)
         time.sleep(10)
 
-def get_query(sqlconn_name, groupid):
-    sug = sqlconn.select_table(groupid, 'group_info_sug')
-    get_query_of_group(sug, sqlconn)
+#def get_query(sqlconn_name, groupid):
+#    sug = sqlconn.select_table(groupid, 'group_info_sug')
+#    get_query_of_group(sug, sqlconn)
 
-def get_suggestion(sqlconn_name, groupid):
-    sug = sqlconn.select_table(groupid, 'group_info_sug')
-    get_sug_of_group(sug, sqlconn)
+#def get_suggestion(sqlconn_name, groupid):
+#    sug = sqlconn.select_table(groupid, 'group_info_sug')
+#    get_sug_of_group(sug, sqlconn)
     
 def main():
     #get_suggestion(u'笔记本',[])
