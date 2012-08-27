@@ -72,7 +72,7 @@ class thread_diagnose(threading.Thread):
         threading.Thread.__init__(self, name = 'crawler_diagnose')
         self.interval = interval
         self.sqlconn = sqlconn_
-        print 'im not ok...'
+        #print 'im not ok...'
 
     def run(self):
         #while True:
