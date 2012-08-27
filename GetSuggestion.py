@@ -9,6 +9,10 @@ import time
 cookie = Cookie.SimpleCookie()
 sim = SimHttp.SimBrowser(cookie)
 
+#class Suggestion():
+#    '''get suggestions of keyword'''
+#    def __init__(self)
+
 host_name = 'http://keys.tu1001.com:1110'
 
 def clean_tag(src):
@@ -151,13 +155,7 @@ def thread_sug(sqlconn_name):
         get_sug_of_group(group, sqlconn)
         time.sleep(10)
 
-#def get_query(sqlconn_name, groupid):
-#    sug = sqlconn.select_table(groupid, 'group_info_sug')
-#    get_query_of_group(sug, sqlconn)
 
-#def get_suggestion(sqlconn_name, groupid):
-#    sug = sqlconn.select_table(groupid, 'group_info_sug')
-#    get_sug_of_group(sug, sqlconn)
     
 def main():
     #get_suggestion(u'笔记本',[])
