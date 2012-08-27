@@ -30,12 +30,12 @@ class thread_word_sug(threading.Thread):
         self.sqlconn = sqlconn_
 
     def run(self):
-        while True:
+        #while True:
             #PrBdkey.thread_sug()
-            GetSuggestion.thread_sug(self.sqlconn)
-            print 'I\'m sleeping...'
-            time.sleep(self.interval)
-            print 'Working again...'
+        GetSuggestion.thread_sug(self.sqlconn)
+        print 'I\'m sleeping...'
+        #time.sleep(self.interval)
+        #print 'Working again...'
 
 class thread_rank(threading.Thread):
     ''''''
@@ -60,12 +60,12 @@ class thread_query(threading.Thread):
         self.sqlconn = sqlconn_
 
     def run(self):
-        while True:
+        #while True:
             #BaiduRank.thread_query()
-            GetSuggestion.thread_query(self.sqlconn)
-            print 'I\'m sleeping...'
-            time.sleep(self.interval)
-            print 'Working again...'
+        GetSuggestion.thread_query(self.sqlconn)
+        print 'I\'m finishing working...'
+        #    time.sleep(self.interval)
+        #    print 'Working again...'
 
 class thread_diagnose(threading.Thread):
     ''''''
@@ -76,11 +76,11 @@ class thread_diagnose(threading.Thread):
         print 'im not ok...'
 
     def run(self):
-        while True:
-            GetDiagnose.thread_diagnose(self.sqlconn)
-            print 'I\'m sleeping...'
-            time.sleep(self.interval)
-            print 'Working again...'
+        #while True:
+        GetDiagnose.thread_diagnose(self.sqlconn)
+        print 'I\'m sleeping...'
+            #time.sleep(self.interval)
+            #print 'Working again...'
 
 def main(sqlconn):
     #sqlconn = sqliteconn.sqlconn()
