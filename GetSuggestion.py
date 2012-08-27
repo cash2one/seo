@@ -6,6 +6,9 @@ import Cookie
 import sqliteconn
 import time
 
+cookie = Cookie.SimpleCookie()
+sim = SimHttp.SimBrowser(cookie)
+
 host_name = 'http://keys.tu1001.com:1110'
 
 def clean_tag(src):
@@ -22,8 +25,6 @@ def get_baidu_loadurl(key_word, target_url):
     host = 'http://www.baidu.com/s'
     url = host + '?wd=site%3A' + target_url + '+' + key_word
     print url
-    cookie = Cookie.SimpleCookie()
-    sim = SimHttp.SimBrowser(cookie)
     re, content = sim.request(url, 'GET')
     content = content.decode('utf-8')
     ret = BaiduRank.FindSection(content, '<span class="g">', '</span>')
@@ -38,7 +39,7 @@ def get_baidu_loadurl(key_word, target_url):
     return clean_tag(ret[0].split(' ')[1])
 
 def get_relate(key_word):
-    sim = SimHttp.SimBrowser('')
+    sim = SimHttp.Browser('')
     #url = host_name + '?keyword=' + key_word
     url = host_name + '?relate=' + key_word
     print url
@@ -86,23 +87,28 @@ def get_query_of_sug_word(groupid, url, sqlconn):
         for item in ret_dic:
             print item, ret_dic[item]
         sqlconn.update_table(ret_dic, s_dic, 'suggestion')
+        time.sleep(5)
 
 def get_query_of_group(group, sqlconn):
     groupid = str(group[0])
     status = group[5]
+    print status,
     # 如果推荐词抓取未完成, 返回
     if status != 1:
-        return
+        return False
 
     url = group[4]
+    print url
     if url == None:
-        return
+        return False
+    #print url
     get_query_of_sug_word(groupid, url, sqlconn)
 
     # 更改状态为推荐词查询完成
     ret_dic = {'status':'2'}
     s_dic = {'groupid':str(group[0])}
     sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
+    return True
 
 def get_sug_of_group(group, sqlconn):
     # 关键字状态为促初始
@@ -133,8 +139,8 @@ def thread_query(sqlconn_name):
     print len(group_ret)
     idx = 0
     for group in group_ret:
-        get_query_of_group(group, sqlconn)
-        time.sleep(10)
+        if get_query_of_group(group, sqlconn):
+            time.sleep(10)
         print '#####################'
     print 'Finish>>>>>>>>>>>>>>'
 

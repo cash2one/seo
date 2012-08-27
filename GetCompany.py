@@ -10,6 +10,9 @@ import SimHttp
 import time
 import Cookie
 
+cookie = Cookie.SimpleCookie()
+sim = SimHttp.SimBrowser(cookie)
+
 class FindUrlParser(HTMLParser.HTMLParser):
     ''' '''
     def __init__(self):
@@ -76,9 +79,6 @@ def ParserDetailHtml(html_src):
     #print all_detail
 
 def ReadYouboyHtml(url, pre_url):
-
-    cookie = Cookie.SimpleCookie()
-    sim = SimHttp.SimBrowser(cookie)
     re, content = sim.request(url, 'GET')
     #print content
     return content
@@ -137,11 +137,12 @@ def ReadHtmlOnPage(key, pagenum=0):
     ret = []
     for item in ReadSearchHtml(html_src):
         dic = [key]
-        dic.extend(ReadDetailHtml(item, url))
+        dic.extend(ReadDetailHtml(item, url)) 
+        print 'sleeping for 5 seconds...'
+        time.sleep(5)
         if len(dic) == 1:
             continue
         ret.append(dic)
-        time.sleep(5)
     #for item in ret:
     #    print item.encode('gbk')
     return ret

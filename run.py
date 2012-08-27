@@ -51,7 +51,6 @@ class thread_rank(threading.Thread):
             time.sleep(self.interval)
             print 'Working again...'
 
-
 class thread_query(threading.Thread):
     ''''''
     def __init__(self, sqlconn_, interval=60*10):
@@ -90,7 +89,7 @@ def main(sqlconn):
     #crawler_sug = thread_word_sug(sqlconn_=sqlconn)
     #crawler_diagnose = thread_diagnose(sqlconn_=sqlconn)
     
-    #crawler_company.start()    
+    crawler_company.start()    
     #crawler_query.start()
     crawler_rank.start()
     #crawler_sug.start()

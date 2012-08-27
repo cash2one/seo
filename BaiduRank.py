@@ -11,6 +11,10 @@ import SimHttp
 import Cookie
 import time
 
+cookie = Cookie.SimpleCookie()
+sim = SimHttp.SimBrowser(cookie)
+
+
 class FindUrlParser(HTMLParser.HTMLParser):
     ''' '''
     def __init__(self, url):
@@ -115,8 +119,6 @@ def GetBaiduPage(key, page_num=0):
     url += key.encode('utf-8')
 #    print 'try load', url.decode('utf-8').encode('gbk')
 
-    cookie = Cookie.SimpleCookie()
-    sim = SimHttp.SimBrowser(cookie)
     re, content = sim.request(url, 'GET')
     #print re
     try:
@@ -152,9 +154,8 @@ def GetBaiduFixRank(key, target_url):
     
     link = GetFixLink(html)
     for i in xrange(0, len(link)):
-        print link[i]
         if link[i].find(target_url) != -1:
-            return str(i + 1), link[i].split(' ')[0]
+            return str(i), link[i].split(' ')[0]
     return '0',''
 
 def get_rank_of_group(group, sqlconn):
