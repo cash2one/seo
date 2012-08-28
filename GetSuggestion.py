@@ -60,7 +60,12 @@ def get_relate(key_word):
 def get_flow(key_word):
     url = host_name + '?keyword=' + key_word
     re, content = SimHttp.SimBrowser('').request(url, 'GET')
-    return content[:-1].split('\t')
+    #return content[:-1].split('\t')
+    baidu_google = content[:-1].split('\t')[:-1]
+    ranker_bd = BaiduRank.GetBaiduRank()
+    baidu_collect = ranker_bd.GetBaiduNum(key_word)
+    baidu_google.append(baidu_collect)
+    return baidu_google
 
 def get_suggestion(start_key, forbidden):
     sug_word = get_relate(start_key)
@@ -163,7 +168,7 @@ def thread_sug(sqlconn_name):
 def main():
     #get_suggestion(u'笔记本',[])
     #thread_sug()
-    thread_query()
+    thread_sug('company.db')
     #print get_baidu_loadurl(u'鲜花', 'caihhua.com')
 
 if __name__ == '__main__':

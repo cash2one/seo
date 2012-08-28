@@ -42,6 +42,6 @@ class Base():
             dec_src = content.decode('utf-8')
         except:
             print 'decode html_src of', url, 'error, continue...'
-            print dec_src
+            #print dec_src
             return ''
         return dec_src

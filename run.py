@@ -10,7 +10,7 @@ import sqliteconn
 
 class thread_company(threading.Thread):
     ''''''
-    def __init__(self, sqlconn_, interval=60*10):
+    def __init__(self, sqlconn_, interval=60*5):
         threading.Thread.__init__(self, name = 'crawler_company')
         self.interval = interval
         self.sqlconn = sqlconn_
@@ -39,7 +39,7 @@ class thread_word_sug(threading.Thread):
 
 class thread_rank(threading.Thread):
     ''''''
-    def __init__(self, sqlconn_, interval=60*10):
+    def __init__(self, sqlconn_, interval=60*5):
         threading.Thread.__init__(self, name = 'crawler_rank')
         self.interval = interval
         self.sqlconn = sqlconn_

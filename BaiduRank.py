@@ -11,6 +11,7 @@ import SimHttp
 import Cookie
 import time
 import Base
+import getgoogleorder
 
 #cookie = Cookie.SimpleCookie()
 #sim = SimHttp.SimBrowser(cookie)
@@ -18,6 +19,10 @@ import Base
 class GetBaiduRank():
     def __init__(self):
         self.base = Base.Base()
+        cookie = Cookie.SimpleCookie()
+        self.sim = SimHttp.SimBrowser(cookie)
+        self.UserAgent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 2.0.50727; InfoPath.2)";
+        self.url_ref = 'wwww.baidu.com'
 
     def GetBaiduPage(self, key, page_num=0):
         '''get baidu search page of num page_num'''
@@ -27,8 +32,17 @@ class GetBaiduRank():
         url_domain = 'http://www.baidu.com/s?'
         url = url_domain + url_attrs + '&wd='
         url += key.encode('utf-8')
+        header = {'Referer':self.url_ref,'User-Agent':self.UserAgent}    
+        res,Fhtml = self.sim.request(url,'GET',headers=header);
+
+        try:
+            content = Fhtml.decode('utf-8')
+        except:
+            content = ''
+        self.url_ref = url
+        return content
         #print url
-        return self.base.GetHtmlPage(url)
+        #return self.base.GetHtmlPage(url)''
 
     def AnaylsisBdSearchHtml(self, html):
         table_ret = self.base.FindSection(html, '<table', '>')
@@ -66,6 +80,19 @@ class GetBaiduRank():
         #    print i
         return left_rank
 
+    def GetBaiduPageNum(self, html_src):
+        num = self.base.FindSection(html_src, '<span class="nums"', '</span>')
+        #print num 
+        if len(num) != 1:
+            return ''
+        ret = num[0].split(u'约')[1].split(u'个')
+        #print ret[0]
+        return ret[0]
+
+    def GetBaiduNum(self, key):
+        html_src = self.GetBaiduPage(key)
+        return self.GetBaiduPageNum(html_src)
+
     def find_table(self, html_src, start):
         s = html_src.find('<table', start)
         if s == -1:
@@ -93,27 +120,9 @@ class GetBaiduRank():
                 return link[0], link[1]
         return 0, ''
 
-#                ret_1 = link[0]
-#                ret_url_1 = link[1]
-#            elif link[1].find(cmp_url) != -1:
-#                ret_2 = link[0]
-#                ret_url_2 = link[1]
-#
-#        return ret_1, ret_2, ret_url_1, ret_url_2
-
-        idx = 0
-        htmlparser = FindUrlParser(target_url)
-        while True:
-            idx, content = self.find_table(html_src, idx)
-            if idx == -1:
-                break
-            htmlparser.feed(content)
-            if htmlparser.rank != 0:
-                return htmlparser.rank, htmlparser.rank_url
-        return 0, ''
-
     def GetBaiduPageFull(self, key, target_url, pagenum=5):
         search_key = key
+        baidu_num = 0
         for i in xrange(0, pagenum):
             html = self.GetBaiduPage(search_key, i)
             if html == '':
@@ -138,30 +147,49 @@ class GetBaiduRank():
                 return str(i + 1), link[i].split(' ')[0]
         return '0',''
 
+    def GetHost(self, url):
+        if url.find('www.') != -1:
+            return url.replace('www.', '.')
+        return url
+
     def get_rank_of_group(self, group, sqlconn):
         keywords = group[2].split('#')
         for key in keywords:
             ret = [str(group[0]), key]
+            my_url = self.GetHost(group[3])
+            cmp_url = self.GetHost(group[4])
+            print my_url, cmp_url
             if group[5] == 1:
-                my_rank, my_rank_url = self.GetBaiduPageFull(key, group[3])
-                other_rank, other_rank_url = self.GetBaiduPageFull(key, group[4])
+                my_rank, my_rank_url = self.GetBaiduPageFull(key, my_url)
+                other_rank, other_rank_url = self.GetBaiduPageFull(key, cmp_url)
                 #my_rank, other_rank, my_rank_url, other_rank_url = self.GetBaiduPageFull(key, group[3], group[4])
+                # 添加baidu排名情况
                 ret.append(my_rank + '|' + other_rank)
                 ret.append(my_rank_url + '|' + other_rank_url)
-                ret.append('')
-                ret.append('')
+                #ret.append('')
+                google_ranker = getgoogleorder.TGoogleOrder(key.encode('utf-8'), my_url, cmp_url)
+                r_1, r_2 = google_ranker.getFixRank()
+                #r_1 = 0
+                #r_2 = 0
+                # 添加google排序情况 google没有url
+                ret.append(str(r_1) + '|' + str(r_2))
+                ret.append('|')
             elif group[5] == 2:
-                ret.append('')
-                ret.append('')
-                my_rank, my_rank_url = self.GetBaiduFixRank(key, group[3])
-                other_rank, other_rank_url = self.GetBaiduFixRank(key, group[4])
+                # 添加百度竞价排名
+                my_rank, my_rank_url = self.GetBaiduFixRank(key, my_url)
+                other_rank, other_rank_url = self.GetBaiduFixRank(key, cmp_url)
                 ret.append(my_rank + '|' + other_rank)
                 ret.append(my_rank_url + '|' + other_rank_url)
+                # google竞价排名为空
+                ret.append('|')
+                ret.append('|')
             ret.append('unknown flow')
+            #ret.append(self.GetBaiduNum(key))
+            #ret.append(Get
             #print ret
             #sqlconn.insert_multi(ret, 'rank_compare')
             print 'sleep for next keyword...'
-            time.sleep(2)
+            #time.sleep(2)
             yield ret
 
     def thread_rank(self, sqlconn_name):
@@ -183,7 +211,7 @@ class GetBaiduRank():
                 print key_rank_ret
             #after read a group, sleep for 10 seconds
             print 'sleep for next group...'
-            time.sleep(5)
+            #time.sleep(5)
             #break
 
 class FindUrlParser(HTMLParser.HTMLParser):

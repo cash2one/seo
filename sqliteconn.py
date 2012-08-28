@@ -84,15 +84,19 @@ class sqlconn():
         date = time.localtime(time.time())
         date = time.strftime('%Y-%m-%d %H:%M:%S', date)
         dic.append(date)
-        for i in xrange(0, len(dic)):
-            if len(dic[i].strip()) != 0:
-                ret += '"' + dic[i] + '"'
-            else:
-                ret += '" "'
-            if i != len(dic) - 1:
-                ret += ','
-            else:
-                ret += ')'
+        try:
+            for i in xrange(0, len(dic)):
+                if len(dic[i].strip()) != 0:
+                    ret += '"' + dic[i] + '"'
+                else:
+                    ret += '" "'
+                if i != len(dic) - 1:
+                    ret += ','
+                else:
+                    ret += ')'
+        except:
+            ret = ''
+            print 'generate sql str error!...'
         #print ret
         return ret
 
