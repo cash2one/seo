@@ -158,7 +158,7 @@ class GetBaiduRank():
             ret = [str(group[0]), key]
             my_url = self.GetHost(group[3])
             cmp_url = self.GetHost(group[4])
-            print my_url, cmp_url
+            print key, my_url, cmp_url
             if group[5] == 1:
                 my_rank, my_rank_url = self.GetBaiduPageFull(key, my_url)
                 other_rank, other_rank_url = self.GetBaiduPageFull(key, cmp_url)
