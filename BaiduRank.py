@@ -54,7 +54,10 @@ class GetBaiduRank():
             #print rank_id
             if len(rank_id) != 1:
                 continue
-            if int(rank_id[0]) > 100:
+            try:
+                if int(rank_id[0]) > 100:
+                    continue
+            except:
                 continue
             rank_url = self.base.FindSection(table, 'mu="', '"')
             if len(rank_url) != 1:
@@ -102,10 +105,6 @@ class GetBaiduRank():
     
     def GetBaiduNatureRank(self, html_src, target_url):
         links = self.AnaylsisBdSearchHtml(html_src)
-        #ret_1 = 0
-        #ret_2 = 0
-        #ret_url_1 = ''
-        #ret_url_2 = ''
         for link in links:
             #print link
             if link[1].find('http://www.baidu.com/link?url') != -1:
@@ -158,7 +157,7 @@ class GetBaiduRank():
             ret = [str(group[0]), key]
             my_url = self.GetHost(group[3])
             cmp_url = self.GetHost(group[4])
-            print key, my_url, cmp_url
+            print my_url, cmp_url
             if group[5] == 1:
                 my_rank, my_rank_url = self.GetBaiduPageFull(key, my_url)
                 other_rank, other_rank_url = self.GetBaiduPageFull(key, cmp_url)
