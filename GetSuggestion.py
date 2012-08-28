@@ -19,6 +19,7 @@ host_name = 'http://keys.tu1001.com:1110'
 
 def clean_tag(src):
     ret = src
+    #print ret
     while True:
         s = ret.find('<')
         if s == -1:
@@ -34,17 +35,18 @@ def get_baidu_loadurl(key_word, target_url):
     
     re, content = sim.request(url, 'GET')
     content = content.decode('utf-8')
-    print content
+    #print content
     ret = base.FindSection(content, '<span class="g">', '</span>')
     #for item in ret:
     #    print item.split(' ')[1]
-    #print ret
+    #print ret[0]
     if len(ret) == 0:
         return 'unfind'
     if ret[0].find(' ') == -1:
         return 'unfind'
     # 去除可能出来的<br></br>标签
-    return clean_tag(ret[0].split(' ')[1])
+    #print ret[0].lstrip().split(' ')
+    return clean_tag(ret[0].lstrip().split(' ')[0])
 
 def get_relate(key_word):
     sim = SimHttp.SimBrowser('')
@@ -168,7 +170,7 @@ def thread_sug(sqlconn_name):
 def main():
     #get_suggestion(u'笔记本',[])
     #thread_sug()
-    thread_sug('company.db')
+    thread_query('company.db')
     #print get_baidu_loadurl(u'鲜花', 'caihhua.com')
 
 if __name__ == '__main__':
