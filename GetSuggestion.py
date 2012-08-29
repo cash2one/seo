@@ -102,7 +102,7 @@ def get_query_of_sug_word(groupid, url, sqlconn):
                    'load_url':get_baidu_loadurl(sug_word, url)}
         s_dic = {'groupid':groupid,
                  'sug_word':sug_word}
-        for item in ret_dic:
+        #for item in ret_dic:
             #print item, ret_dic[item]
         sqlconn.update_table(ret_dic, s_dic, 'suggestion')
         #time.sleep(5)
