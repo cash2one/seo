@@ -21,9 +21,9 @@ class thread_company(threading.Thread):
     def run(self):
         while True:
             GetCompany.thread_crawler_company(self.sqlconn)
-            print 'I\'m sleeping...'
+            #print 'I\'m sleeping...'
             time.sleep(self.interval)
-            print 'Working again...'
+            #print 'Working again...'
 
 class thread_word_sug(threading.Thread):
     ''''''
@@ -38,7 +38,7 @@ class thread_word_sug(threading.Thread):
         if lock_of_suggestion.acquire(100):
             GetSuggestion.thread_sug(self.sqlconn)
             lock_of_suggestion.release()
-            print 'I\'m sleeping...'
+            #print 'I\'m sleeping...'
 
 class thread_rank(threading.Thread):
     ''''''
@@ -50,9 +50,9 @@ class thread_rank(threading.Thread):
     def run(self):
         while True:
             BaiduRank.thread_rank(self.sqlconn)
-            print 'I\'m sleeping...'
+            #print 'I\'m sleeping...'
             time.sleep(self.interval)
-            print 'Working again...'
+            #print 'Working again...'
 
 class thread_query(threading.Thread):
     ''''''
@@ -63,9 +63,10 @@ class thread_query(threading.Thread):
 
     def run(self):
         if lock_of_suggestion.acquire(100):
-            GetSuggestion.thread_sug(self.sqlconn)
+            #print 'I\'m working...'
+            GetSuggestion.thread_query(self.sqlconn)
             lock_of_suggestion.release()
-            print 'I\'m finishing working...'
+            #print 'I\'m finishing working...'
 
 class thread_diagnose(threading.Thread):
     ''''''
@@ -77,26 +78,27 @@ class thread_diagnose(threading.Thread):
 
     def run(self):
         if lock_of_diagnose.acquire(100):
-            GetSuggestion.thread_sug(self.sqlconn)
+            GetDiagnose.thread_diagnose(self.sqlconn)
             lock_of_diagnose.release()
-            print 'I\'m sleeping...'
+            #print 'I\'m sleeping...'
 
 def main(sqlconn):
     #sqlconn = sqliteconn.sqlconn()
-    crawler_company = thread_company(sqlconn_=sqlconn, interval=1000)
+    crawler_company = thread_company(sqlconn_=sqlconn)
     #crawler_query = thread_query(sqlconn_=sqlconn)
     crawler_rank = thread_rank(sqlconn_=sqlconn)
     #crawler_rank_multi = thread_rank(sqlconn_=sqlconn)
     #crawler_sug = thread_word_sug(sqlconn_=sqlconn)
     #crawler_diagnose = thread_diagnose(sqlconn_=sqlconn)
     
-    crawler_company.start()    
-    #crawler_query.start()
+    crawler_company.start()
     crawler_rank.start()
+    
+    #crawler_query.start()
     #crawler_rank_multi.start()
     #crawler_sug.start()
     #crawler_diagnose.start()
-    print 'thread working behind...'
+    #print 'thread working behind...'
 
 if __name__ == '__main__':
     main('company.db')

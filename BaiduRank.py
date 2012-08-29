@@ -53,7 +53,7 @@ class GetBaiduRank():
         url_domain = 'http://www.baidu.com/s?'
         url = url_domain + url_attrs + '&wd='
         url += key.encode('utf-8')
-        print url
+        #print url
 
         return self.GetPage(url)
 
@@ -260,7 +260,7 @@ class GetBaiduRank():
             ret = [str(group[0]), key]
             my_url = self.GetHost(group[3])
             cmp_url = self.GetHost(group[4])
-            print key, my_url, cmp_url
+            #print key, my_url, cmp_url
             if group[5] == 1:
                 #my_rank, my_rank_url = self.GetBaiduNatureRank(key, my_url)
                 #other_rank, other_rank_url = self.GetBaiduNatureRank(key, cmp_url)
@@ -269,7 +269,7 @@ class GetBaiduRank():
                 ret.append(my_rank + '|' + other_rank)
                 ret.append('|')
                 #ret.append(my_rank_url + '|' + other_rank_url)
-                print ret
+                #print ret
                 #ret.append('')
                 google_ranker = getgoogleorder.TGoogleOrder(key.encode('utf-8'), my_url, cmp_url)
                 #r_1, r_2 = google_ranker.getFixRank()
@@ -296,7 +296,7 @@ class GetBaiduRank():
             #ret.append(Get
             #print ret
             #sqlconn.insert_multi(ret, 'rank_compare')
-            print 'sleep for next keyword...'
+            #print 'sleep for next keyword...'
             #time.sleep(2)
             yield ret
 
@@ -305,12 +305,12 @@ class GetBaiduRank():
         group_ret = sqlconn.read_group_info('group_info_rank')
         for group in group_ret:
             for key_rank_ret in self.get_rank_of_group(group, sqlconn):
-                print key_rank_ret
+                #print key_rank_ret
                 if key_rank_ret[2] == '-1|-1':
                     continue
                 sqlconn.insert_multi(key_rank_ret, 'rank_compare')
             #after read a group, sleep for 10 seconds
-            print 'after read a group, sleep for a while...'
+            #print 'after read a group, sleep for a while...'
             #time.sleep(10)
 
     def mock_thread_rank(self, sqlconn_name):
@@ -320,7 +320,7 @@ class GetBaiduRank():
             for key_rank_ret in self.get_rank_of_group(group, sqlconn):
                 print key_rank_ret
             #after read a group, sleep for 10 seconds
-            print 'sleep for next group...'
+            #print 'sleep for next group...'
             #time.sleep(5)
             #break
 

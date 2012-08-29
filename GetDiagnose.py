@@ -92,7 +92,7 @@ class TaizhanFace:
         aPr = gethtmltagval(content,'images/pr/pr','','.gif'); # Pr查询
         adianxiRun = gethtmltagval(content,u'电信响应：','','&n');
         aliantongRun = gethtmltagval(content,u'联通响应：','','"');
-        
+
         return [aIP,seoInlink,aveThree,aALEXAIP,aALEXAUV,webtitle,webkeys,webdesc,aPr,adianxiRun ,aliantongRun]
 
         
@@ -102,6 +102,7 @@ class TaizhanFace:
         print aUrl;
         header ={'User-Agent':self.UserAgent};
         res, content = self.sim.request(aUrl,'GET',headers=header,follow_redirects=True);
+        content = content.decode('utf-8')
         return [gethtmltagval(content,'baidu_ip','"','"')];
     def getoutlink(self): #  获取外链个数
         timestr=getjstimestr(time.time())[0:9]; 
@@ -150,7 +151,7 @@ def get_diagnose_of_url(url):
 
 def get_diagnose_of_group(group, sqlconn):
     if group[4] != 0:
-        return 
+        return False
     
     ret_my = get_diagnose_of_url(group[2])
     ret_other = get_diagnose_of_url(group[3])
@@ -165,13 +166,16 @@ def get_diagnose_of_group(group, sqlconn):
     ret_dic = {'status':'1'}
     s_dic = {'groupid':str(group[0])}
     sqlconn.update_table(ret_dic, s_dic, 'group_info_diagnose')
+    return True
 
 def thread_diagnose(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
+    #print 'ok'
     group_ret = sqlconn.read_group_info('group_info_diagnose')
     for group in group_ret:
-        get_diagnose_of_group(group, sqlconn)
-        time.sleep(10)
+        if get_diagnose_of_group(group, sqlconn):
+            time.sleep(10)
+    #print 'finish'
 
 class Diagnose():
     ''''''
@@ -198,4 +202,4 @@ def main():
 
 if __name__ == "__main__":
     #main();
-    thread_diagnose()
+    thread_diagnose('company.db')

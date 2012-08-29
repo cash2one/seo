@@ -90,6 +90,7 @@ class sqlconn():
         dic.append(date)
         try:
             for i in xrange(0, len(dic)):
+                #print dic[i].encode('utf-8')
                 if len(dic[i].strip()) != 0:
                     ret += '"' + dic[i] + '"'
                 else:

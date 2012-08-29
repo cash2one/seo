@@ -47,7 +47,7 @@ def ParserDetailHtml(html_src):
     date = time.strftime('%Y-%m-%d', date)
     # 查看网页中的更新时间信息，如果不是当前不要
     if html_src[s_pos + 4:e_pos] != date:
-        print 'old information...'
+        #print 'old information...'
         return []
     dic = [html_src[s_pos + 4:e_pos]]
     s_pos = html_src.find('<DIV class=mainintxt>')
@@ -85,15 +85,15 @@ def ReadYouboyHtml(url, pre_url):
 
 def ReadDetailHtml(url, pre_url):
     full_url = 'http://www.youboy.com' + url
-    print full_url
+    #print full_url
     #html_src = urllib.urlopen(full_url).read().decode('utf-8')
     html_src = ReadYouboyHtml(full_url, pre_url)
     try:
         html_src = html_src.decode('utf-8')
     except:
-        print '/////////'
-        print 'decode company info url_src error...'
-        print '/////////'
+        #print '/////////'
+        #print 'decode company info url_src error...'
+        #print '/////////'
         return []
     #time.sleep(2)
     return ParserDetailHtml(html_src)
@@ -130,15 +130,15 @@ def ReadHtmlOnPage(key, pagenum=0):
     url_domain = 'http://www.youboy.com/s/s.jsp?'
     url = url_domain + url_attrs + '&kw='
     url += key.encode('utf-8')
-    print url
+    #print url
     #html_src = urllib.urlopen(url).read()
     html_src = ReadYouboyHtml(url, '')
-    print 'load html ok...'
+    #print 'load html ok...'
     ret = []
     for item in ReadSearchHtml(html_src):
         dic = [key]
         dic.extend(ReadDetailHtml(item, url)) 
-        print 'sleeping for 5 seconds...'
+        #print 'sleeping for 5 seconds...'
         time.sleep(5)
         if len(dic) == 1:
             continue
