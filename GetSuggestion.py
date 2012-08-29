@@ -67,6 +67,7 @@ def get_flow(key_word):
     ranker_bd = BaiduRank.GetBaiduRank()
     baidu_collect = ranker_bd.GetBaiduNum(key_word)
     baidu_google.append(baidu_collect)
+    #time.sleep(1)
     return baidu_google
 
 def get_suggestion(start_key, forbidden):
@@ -92,7 +93,7 @@ def get_query_of_sug_word(groupid, url, sqlconn):
         sug_word = row_sug[2]
         print url, sug_word
         rank_getter = BaiduRank.GetBaiduRank()
-        my_rank, my_rank_url = rank_getter.GetBaiduPageFull(sug_word, url)
+        my_rank, my_rank_url = rank_getter.GetBaiduNatureRank(sug_word, url)
         #my_rank, my_rank_url = BaiduRank.GetBaiduPageFull(sug_word, url)
         #my_rank = 0
         #my_rank_url = '...'
@@ -104,15 +105,20 @@ def get_query_of_sug_word(groupid, url, sqlconn):
         for item in ret_dic:
             print item, ret_dic[item]
         sqlconn.update_table(ret_dic, s_dic, 'suggestion')
-        time.sleep(5)
+        #time.sleep(5)
 
 def get_query_of_group(group, sqlconn):
     groupid = str(group[0])
     status = group[5]
     print status,
     # 如果推荐词抓取未完成, 返回
-    if status != 1:
+    if status != 3:
         return False
+
+    # 更改状态为关键字推荐进行中
+    ret_dic = {'status':'4'}
+    s_dic = {'groupid':str(group[0])}
+    sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
 
     url = group[4]
     print url
@@ -122,15 +128,20 @@ def get_query_of_group(group, sqlconn):
     get_query_of_sug_word(groupid, url, sqlconn)
 
     # 更改状态为推荐词查询完成
-    ret_dic = {'status':'2'}
+    ret_dic = {'status':'5'}
     s_dic = {'groupid':str(group[0])}
     sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
     return True
 
 def get_sug_of_group(group, sqlconn):
-    # 关键字状态为促初始
+    # 关键字状态为初始
     if group[5] != 0:
         return
+
+    # 更改状态为关键字推荐进行中
+    ret_dic = {'status':'1'}
+    s_dic = {'groupid':str(group[0])}
+    sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
 
     key_words = group[2].split('#')
     #if group[3] != '':
@@ -141,10 +152,15 @@ def get_sug_of_group(group, sqlconn):
             ist_ret = [str(group[0]), key_word]
             ist_ret.extend(sug_res)
             ist_ret.extend(['-1','unknown'])
-
+            print ist_ret
             sqlconn.insert_multi(ist_ret, 'suggestion')
             #for item in sug_res:
                 #print item
+    # 更改状态为关键字推荐完成
+    ret_dic = {'status':'2'}
+    s_dic = {'groupid':str(group[0])}
+    sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
+    return True
 
 def thread_query(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
@@ -169,7 +185,7 @@ def thread_sug(sqlconn_name):
     
 def main():
     #get_suggestion(u'笔记本',[])
-    #thread_sug()
+    #thread_sug('company.db')
     thread_query('company.db')
     #print get_baidu_loadurl(u'鲜花', 'caihhua.com')
 

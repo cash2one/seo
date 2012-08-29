@@ -41,7 +41,11 @@ class Base():
         try:
             dec_src = content.decode('utf-8')
         except:
-            print 'decode html_src of', url, 'error, continue...'
-            #print dec_src
-            return ''
+            #des_src = content.decode
+            try:
+                dec_src = content.decode('gbk')
+            except:  
+                print 'decode html_src of', url, 'error, continue...'
+                #print dec_src
+                return ''
         return dec_src

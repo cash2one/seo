@@ -8,8 +8,10 @@ import codecs
 import hashlib;
 import base64
 import time
+import threading
 
 dbpath = 'company.db'
+lock_of_sql = threading.Lock()
 
 class sqlconn():
     def __init__(self, dbname):
@@ -47,8 +49,10 @@ class sqlconn():
         
         try:
             #print sql
-            self.conn.execute(sql);
-            self.conn.commit();
+            if lock_of_sql.acquire():
+                self.conn.execute(sql);
+                self.conn.commit();
+                lock_of_sql.release()
             #print 'insert ok...';
         except:
             print 'insert error...'
@@ -105,8 +109,10 @@ class sqlconn():
         #print sql
         try:
             #print sql
-            self.conn.execute(sql);
-            self.conn.commit();
+            if lock_of_sql.acquire():
+                self.conn.execute(sql)
+                self.conn.commit()
+                lock_of_sql.release()
             #print 'insert ok...';
         except:
             print 'insert error...'
@@ -130,8 +136,10 @@ class sqlconn():
         #print sql
         try:
             #print sql
-            self.conn.execute(sql);
-            self.conn.commit();
+            if lock_of_sql.acquire():
+                self.conn.execute(sql)
+                self.conn.commit()
+                lock_of_sql.release()
             #print 'insert ok...';
         except:
             print 'insert error...'
