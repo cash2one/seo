@@ -31,7 +31,7 @@ def clean_tag(src):
 def get_baidu_loadurl(key_word, target_url):
     host = 'http://www.baidu.com/s'
     url = host + '?wd=site%3A' + target_url + '+' + key_word
-    print url
+    #print url
     
     re, content = sim.request(url, 'GET')
     content = content.decode('utf-8')
@@ -52,7 +52,7 @@ def get_relate(key_word):
     sim = SimHttp.SimBrowser('')
     #url = host_name + '?keyword=' + key_word
     url = host_name + '?relate=' + key_word
-    print url
+    #print url
     re, content = sim.request(url, 'GET')
     #print 'load url ok...'
     #print content
@@ -91,7 +91,7 @@ def get_query_of_sug_word(groupid, url, sqlconn):
         return
     for row_sug in suggestion:
         sug_word = row_sug[2]
-        print url, sug_word
+        #print url, sug_word
         rank_getter = BaiduRank.GetBaiduRank()
         my_rank, my_rank_url = rank_getter.GetBaiduNatureRank(sug_word, url)
         #my_rank, my_rank_url = BaiduRank.GetBaiduPageFull(sug_word, url)
@@ -103,14 +103,14 @@ def get_query_of_sug_word(groupid, url, sqlconn):
         s_dic = {'groupid':groupid,
                  'sug_word':sug_word}
         for item in ret_dic:
-            print item, ret_dic[item]
+            #print item, ret_dic[item]
         sqlconn.update_table(ret_dic, s_dic, 'suggestion')
         #time.sleep(5)
 
 def get_query_of_group(group, sqlconn):
     groupid = str(group[0])
     status = group[5]
-    print status,
+    #print status,
     # 如果推荐词抓取未完成, 返回
     if status != 3:
         return False
@@ -121,7 +121,7 @@ def get_query_of_group(group, sqlconn):
     sqlconn.update_table(ret_dic, s_dic, 'group_info_sug')
 
     url = group[4]
-    print url
+    #print url
     if url == None:
         return False
     #print url
@@ -152,7 +152,7 @@ def get_sug_of_group(group, sqlconn):
             ist_ret = [str(group[0]), key_word]
             ist_ret.extend(sug_res)
             ist_ret.extend(['-1','unknown'])
-            print ist_ret
+            #print ist_ret
             sqlconn.insert_multi(ist_ret, 'suggestion')
             #for item in sug_res:
                 #print item
@@ -165,20 +165,20 @@ def get_sug_of_group(group, sqlconn):
 def thread_query(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
     group_ret = sqlconn.read_group_info('group_info_sug')
-    print len(group_ret)
+    #print len(group_ret)
     idx = 0
     for group in group_ret:
         if get_query_of_group(group, sqlconn):
             time.sleep(10)
-        print '#####################'
-    print 'Finish>>>>>>>>>>>>>>'
+        #print '#####################'
+    #print 'Finish>>>>>>>>>>>>>>'
 
 def thread_sug(sqlconn_name):
     sqlconn = sqliteconn.sqlconn(sqlconn_name)
     group_ret = sqlconn.read_group_info('group_info_sug')
     for group in group_ret:
         get_sug_of_group(group, sqlconn)
-        print 'sleep for crawler next group of sug...'
+        #print 'sleep for crawler next group of sug...'
         time.sleep(10)
 
 
