@@ -344,7 +344,7 @@ class FindUrlParser(HTMLParser.HTMLParser):
                     except:
                         self.ret_tmp = 0
                 if key == 'mu':
-                    print '---', value, self.url
+                    #print '---', value, self.url
                     if value.find(self.url) != -1:
                         self.rank = self.ret_tmp
                         self.rank_url = value
