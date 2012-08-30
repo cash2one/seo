@@ -1,5 +1,17 @@
 #!/usr/bin/python
 # -*-coding:utf-8 -*-
+
+#
+# 封装数据库操作。所有的更新和插入操作都必须检查锁
+# 
+# 比较简单的封装策略，
+# 插入的时候没有考虑关键字对应，直接按顺序将传入的序列中每个
+# 值都依次插入到数据库表中。
+# 更新的时候需要传入2个字典， 分别对应更新项和查询项。
+#
+#
+
+
 import sqlite3;
 import datetime;
 import sys
@@ -24,13 +36,11 @@ class sqlconn():
 
     def select_table(self, groupid, table_name):
         sql = 'select * from ' + table_name + ' where "groupid" = ' + groupid + ''
-        #sql = 'select * from ' + table_name
 
         try:
             print sql
             cur = self.conn.cursor()
             cur.execute(sql)
-            #print 'query ok...'
             ret = cur.fetchall()
             return ret
         except:
@@ -149,9 +159,6 @@ class sqlconn():
 def main():
     dic =['as', '2','3','fad','5','adf','7','8','9']
     conn = sqlconn('company.db')
-    #insert(dic)
-    #print time.time()
-    #print read_group_info('group_info_rank')
 
 if __name__ == "__main__":
     main();

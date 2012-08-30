@@ -26,26 +26,21 @@ class Base():
                 break
             s_tab += len(start_tag)
             e_tab = html_src.find(end_tag, s_tab)
-            #e_tab += len(end_tag)
-            #print html_src[s_tab:e_tab]
             ret.append(html_src[s_tab:e_tab])
             idx = e_tab
         return ret
 
     def GetHtmlPage(self, url):
         re, content = self.sim.request(url, 'GET')
-        #print re
         if 'status' not in re or re['status'] != '200':
-            #return ''
+            # 如果打开url失败，重置http连接
             self.sim = SimHttp.SimBrowser(Cookie.SimpleCookie())
+        # 尝试解码网页内容
         try:
             dec_src = content.decode('utf-8')
         except:
-            #des_src = content.decode
             try:
                 dec_src = content.decode('gbk')
             except:  
-                print 'decode html_src of', url, 'error, continue...'
-                #print dec_src
                 return ''
         return dec_src

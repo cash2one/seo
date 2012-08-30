@@ -14,9 +14,6 @@ import Base
 import getgoogleorder
 import random
 
-#cookie = Cookie.SimpleCookie()
-#sim = SimHttp.SimBrowser(cookie)
-
 class GetBaiduRank():
     def __init__(self):
         self.base = Base.Base()
@@ -24,16 +21,21 @@ class GetBaiduRank():
     def GetPage(self, url):
         header = {'Referer':self.url_ref,'User-Agent':self.UserAgent}    
         res,Fhtml = self.sim.request(url,'GET',headers=header);
-        #print res
+
+        # 如果 response 为空或者状态不对 返回''
         if 'status' not in res or res['status'] != '200':
-            print '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-            #print Fhtml.decode('gbk')
             return ''
+        # 更新url ref
+        self.url_ref = url
+        # 尝试解码网页。解码格式为utf-8 和 gbk
         try:
             content = Fhtml.decode('utf-8')
         except:
-            content = ''
-        self.url_ref = url
+            try:
+                content = Fhtml.decode('gbk')
+            except:
+                content = ''
+
         return content
 
     def GetBaiduSearchPages(self, key, flag_reload=True):
@@ -43,29 +45,31 @@ class GetBaiduRank():
         self.url_ref = 'htttp://wwww.baidu.com/'
         
         inputT = random.randint(1000,3000)
+        # 读取百度首页，模拟网页搜索过程。抓取参数。
         rsv_bp, rsv_spt = self.GetBaiduIndex()
+        # 如果解析参数失败，返回空
         if rsv_bp == -1 or rsv_spt == -1:
-            print 'not rsv_bp, rsv_spt'
             return ''
 
+        # 拼接要搜索的url
         attrs = {'ie':'utf-8', 'rsv_bp':rsv_bp, 'rsv_spt':rsv_spt, 'inputT':inputT}
         url_attrs = urllib.urlencode(attrs)
         url_domain = 'http://www.baidu.com/s?'
         url = url_domain + url_attrs + '&wd='
         url += key.encode('utf-8')
-        #print url
 
         return self.GetPage(url)
 
     def GetNextSearchPageLinks(self, html):
+        '''读取搜索结果第一页中存在的后续搜索结果页的url，前10条为有效页'''
         ret = self.base.FindSection(html, '<p id="page">', '</p>')
         if len(ret) != 1:
             return []
         links = self.base.FindSection(ret[0], 'href="', '"')
-        #print links
         return links
                 
     def GetBaiduNatureLinks(self, key):
+        '''返回一个关键字对应搜索得到的url'''
         ret = []
         html = self.GetBaiduSearchPages(key, flag_reload=True)
         if html == '':
@@ -73,7 +77,6 @@ class GetBaiduRank():
             return ret
         # 得到第一页的搜索结果的links
         ret.extend(self.AnaylsisBdSearchHtml(html))
-        #print ret
         # 得到baidu后几页搜索页面的links
         next_pages = self.GetNextSearchPageLinks(html)
         try:
@@ -87,8 +90,8 @@ class GetBaiduRank():
         return ret
 
     def GetBaiduIndex(self):
+        '''打开百度首页，解析得到搜索页中的参数'''
         res, content = self.sim.request('http://www.baidu.com', 'GET')
-        #print res
         if 'status' not in res or res['status'] != '200':
             return -1,-1
 
@@ -99,7 +102,7 @@ class GetBaiduRank():
                 content = content.decode('utf-8')
             except:
                 return -1,-1
-            #zreturn -1,-1
+
         rsv_bp = self.base.FindSection(content, '<input type="hidden" name="rsv_bp" value="', '">')
         if len(rsv_bp) != 1:
             print rsv_bp
@@ -108,19 +111,18 @@ class GetBaiduRank():
         if len(rsv_spt) != 1:
             print rsv_spt
             return -1,-1        
+
         try:
             return int(rsv_bp[0]), int(rsv_spt[0])
         except:
             return -1,-1
 
     def AnaylsisBdSearchHtml(self, html):
+        '''分析一个搜索页，得到其中的自然结果的link和对应的排名'''
         table_ret = self.base.FindSection(html, '<table', '>')
-        #print table_ret
         ret = []
         for table in table_ret:
-            #print table
             rank_id = self.base.FindSection(table, 'id="', '"')
-            #print rank_id
             if len(rank_id) != 1:
                 continue
             try:
@@ -133,7 +135,6 @@ class GetBaiduRank():
                 continue
             ret.append([rank_id[0], rank_url[0]])
         return ret
-       #pass
 
     def GetFixLink(self, html_src):
         '''get all fix link in the page'''
@@ -142,48 +143,34 @@ class GetBaiduRank():
         table_section = self.base.FindSection(html_src, '<table', '</table>')
         if len(table_section) == 0:
             return ['error link']
-        #print table_section[0]
         right_rank = self.base.FindSection(table_section[0], '<font size="-1" color="#008000">', '</font>')
         left_rank = []
         for item in table_section[1:]:
             font = self.base.FindSection(item, '<font size=-1 color="#008000">', '</font>')
             left_rank.extend(font)
         left_rank.extend(right_rank)
-        #for i in left_rank:
-        #    print i
         return left_rank
 
     def GetBaiduPageNum(self, html_src):
+        '''解析搜索页中的收录量'''
         num = self.base.FindSection(html_src, '<span class="nums"', '</span>')
-        #print num 
         if len(num) != 1:
-            print html_src
-            print self.res
             return '0'
         ret = num[0].split(u'约')[1].split(u'个')
-        #print ret[0]
         return ret[0]
 
     def GetBaiduNum(self, key):
+        '''得到百度收录量'''
         html_src = self.GetBaiduSearchPages(key)
         if html_src == '':
             return '-1'
         return self.GetBaiduPageNum(html_src)
 
-    def find_table(self, html_src, start):
-        s = html_src.find('<table', start)
-        if s == -1:
-            return -1, ''
-        e = html_src.find('>', s)
-        return e+1, html_src[s:e+1]
-    
     def GetBaiduNatureRank(self, key, target_url):
-        #links = self.AnaylsisBdSearchHtml(html_src)
         links = self.GetBaiduNatureLinks(key)
         if len(links) == 0:
             return '-1', ''
         for link in links:
-            #print link
             # 可能存在的 百度中间页地址
             if link[1].find('http://www.baidu.com/link?url') != -1:
                 content = self.base.GetHtmlPage(link[1])
@@ -211,13 +198,11 @@ class GetBaiduRank():
     def GetBaiduFixRank_Cmp(self, key, url_1, url_2):
         search_key = key
         html = self.GetBaiduSearchPages(search_key)
-        #print html
         # if couldn't open the url, return -1
         if html == '':
             return '-1','-1'
         
         link = self.GetFixLink(html)
-        #print 'fix links', link
         if len(link) == 0:
             return '0', '0'
         ret_1 = 0
@@ -250,6 +235,7 @@ class GetBaiduRank():
         return ret_1, ret_2
 
     def GetHost(self, url):
+        '''如果是www.xxx.com，则获取他的host'''
         if url.find('www.') != -1:
             return url.replace('www.', '.')
         return url
@@ -258,46 +244,28 @@ class GetBaiduRank():
         keywords = group[2].split('#')
         for key in keywords:
             ret = [str(group[0]), key]
+            # 得到url的host作为对应的查询url
             my_url = self.GetHost(group[3])
             cmp_url = self.GetHost(group[4])
-            #print key, my_url, cmp_url
             if group[5] == 1:
-                #my_rank, my_rank_url = self.GetBaiduNatureRank(key, my_url)
-                #other_rank, other_rank_url = self.GetBaiduNatureRank(key, cmp_url)
                 my_rank, other_rank = self.GetBaiduNatureRank_Cmp(key, my_url, cmp_url)
                 # 添加baidu排名情况
                 ret.append(my_rank + '|' + other_rank)
                 ret.append('|')
-                #ret.append(my_rank_url + '|' + other_rank_url)
-                #print ret
-                #ret.append('')
+                # 添加google排序情况 
                 google_ranker = getgoogleorder.TGoogleOrder(key.encode('utf-8'), my_url, cmp_url)
-                #r_1, r_2 = google_ranker.getFixRank()
-                r_1 = 0
-                r_2 = 0
-                # 添加google排序情况 google没有url
+                r_1, r_2 = google_ranker.getFixRank()
                 ret.append(str(r_1) + '|' + str(r_2))
                 ret.append('|')
             elif group[5] == 2:
                 # 添加百度竞价排名
-                #my_rank, my_rank_url = self.GetBaiduFixRank(key, my_url)
-                #other_rank, other_rank_url = self.GetBaiduFixRank(key, cmp_url)
                 my_rank, other_rank = self.GetBaiduFixRank_Cmp(key, my_url, cmp_url)
-                # 添加baidu排名情况
                 ret.append(my_rank + '|' + other_rank)
                 ret.append('|')
-                #ret.append(my_rank + '|' + other_rank)
-                #ret.append(my_rank_url + '|' + other_rank_url)
                 # google竞价排名为空
                 ret.append('|')
                 ret.append('|')
             ret.append('unknown flow')
-            #ret.append(self.GetBaiduNum(key))
-            #ret.append(Get
-            #print ret
-            #sqlconn.insert_multi(ret, 'rank_compare')
-            #print 'sleep for next keyword...'
-            #time.sleep(2)
             yield ret
 
     def thread_rank(self, sqlconn_name):
@@ -305,13 +273,11 @@ class GetBaiduRank():
         group_ret = sqlconn.read_group_info('group_info_rank')
         for group in group_ret:
             for key_rank_ret in self.get_rank_of_group(group, sqlconn):
-                #print key_rank_ret
+                # 如果百度排名查询失败，则返回
                 if key_rank_ret[2] == '-1|-1':
                     continue
+                #print key_rank_ret
                 sqlconn.insert_multi(key_rank_ret, 'rank_compare')
-            #after read a group, sleep for 10 seconds
-            #print 'after read a group, sleep for a while...'
-            #time.sleep(10)
 
     def mock_thread_rank(self, sqlconn_name):
         sqlconn = sqliteconn.sqlconn(sqlconn_name)
@@ -319,35 +285,6 @@ class GetBaiduRank():
         for group in group_ret:
             for key_rank_ret in self.get_rank_of_group(group, sqlconn):
                 print key_rank_ret
-            #after read a group, sleep for 10 seconds
-            #print 'sleep for next group...'
-            #time.sleep(5)
-            #break
-
-class FindUrlParser(HTMLParser.HTMLParser):
-    ''' '''
-    def __init__(self, url):
-        HTMLParser.HTMLParser.__init__(self)
-        self.rank = 0
-        self.rank_url = ''
-        self.url = url
-
-    def handle_starttag(self, tag, attrs):
-        ret_tmp = 0
-        if 'table' == tag:
-            for key, value in attrs:
-                if key == 'id':
-                    try:
-                        self.ret_tmp = int(value)
-                        if self.ret_tmp > 100:
-                            self.ret_tmp = 0
-                    except:
-                        self.ret_tmp = 0
-                if key == 'mu':
-                    #print '---', value, self.url
-                    if value.find(self.url) != -1:
-                        self.rank = self.ret_tmp
-                        self.rank_url = value
 
 def thread_rank(sqlconn_name):
     rank_getter = GetBaiduRank()
@@ -355,18 +292,5 @@ def thread_rank(sqlconn_name):
 
 if __name__ == '__main__': 
     rank_getter = GetBaiduRank()
-    #rank_getter.GetPage('http://www.baidu.com/link?url=a0dc9c4ab66b234c1c69e829ee96ee81a6e8c0962218c9e338d199d3aad4553b3042aeb663c4a7916db70b8e72a5ca4845b14052ba6a99e563e92829b2c3025698353893')
     while True:
-        #rank_getter = GetBaiduRank()
         rank_getter.thread_rank('company.db')
-        #print rank_getter.GetBaiduLinks(u'鲜花')
-        #break
-    #pass
-    #while True:
-        #rank_getter.thread_rank('company.db')
-    #thread_rank('company.db')
-    #print GetBaiduPageFull('鲜花', 'bj.58.com')
-    #print GetBaiduFixRank('鲜花', 'zhenaihuawu.com')
-    #thread_rank()
-    #thread_query()
-    #GetBaiduNum(u'鲜花')
